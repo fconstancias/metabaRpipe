@@ -126,7 +126,7 @@ dada2/
 └── phyloseq.RDS
 ```	
 
-A `phyloseq` object has been generated and is waiting for you!
+A `phyloseq` object has been generated and is waiting for you with the provided  metadata:
 
 ```R
 librayry(phyloseq)
