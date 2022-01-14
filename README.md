@@ -142,7 +142,11 @@ refseq()      DNAStringSet:      [ 322 reference sequences ]
 In addition,since `--save_out test_pipe_Rscript.RDS ` is specified all the outputs are alse saved within this `R` object.
 
 ```R
-readRDS("test_pipe_Rscript.RDS")
+readRDS("test_pipe_Rscript.RDS") -> out
+
+ls(out)
+[1] "filtering_denoising" "merging"             "physeq"             
+[4] "qplot"               "taxo" 
 ```
 
 
