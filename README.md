@@ -42,28 +42,25 @@ Use ``git clone`` to clone on your computer the repository including the functio
 
 	$ git clone https://github.com/fconstancias/metabaRpipe.git
 
-## Clone the repository:
+## Running the pipeline from the terminal:
 
 Everything is now ready to analyse your raw data.
 There are several options: working within R or the terminal using Rscripts enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one command.
 
-## Running the pipeline from the terminal:
 
-activate the dedicated conda environment:
+First, activate the dedicated conda environment:
 
 	$ conda activate metabaRpipe
 
 
-Use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
+Then, use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
 
-- ``dada`` method: <https://benjjneb.github.io/dada2/training.html>
-
+For instance, using the `test-data` available on the repository:
 
 ```bash
 (metabaRpipe)$ Rscript ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
 -i metabaRpipe/test-data/ \
 --preset V3V4 \
--T 8 \
 --db ~/db/DADA2/silva_nr99_v138_train_set.fa.gz \
 --db_species ~/db/DADA2/silva_species_assignment_v138.fa.gz \
 --metadata metabaRpipe/metadata.xlsx \
@@ -128,6 +125,26 @@ dada2/
 │   └── silva_nr99_v138_train_set_table.tsv
 └── phyloseq.RDS
 ```	
+
+A `phyloseq` object has been generated and is waiting for you!
+
+```R
+librayry(phyloseq)
+readRDS("dada2/phyloseq.RDS")
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 322 taxa and 6 samples ]
+sample_data() Sample Data:       [ 6 samples by 18 sample variables ]
+tax_table()   Taxonomy Table:    [ 322 taxa by 7 taxonomic ranks ]
+refseq()      DNAStringSet:      [ 322 reference sequences ]
+```
+
+
+In addition,since `--save_out test_pipe_Rscript.RDS ` is specified all the outputs are alse saved within this `R` object.
+
+```R
+readRDS("test_pipe_Rscript.RDS")
+```
+
 
 ## Raw data structure:
 
