@@ -1,0 +1,120 @@
+#!/usr/bin/env Rscript
+
+rm(list = ls())
+
+cat("\n############################################################\n")
+cat("Starting \n")
+cat("############################################################\n\n")
+
+## ------------------------------------------------------------------------
+
+require("optparse")
+
+## ------------------------------------------------------------------------
+suppressPackageStartupMessages(library("optparse"))
+
+option_list = list(
+
+  make_option(c("--filt_dir"), type="character", default = "dada2/02_dada2_filtered_denoised_merged", 
+              help="Directory for filtered reads", metavar="character"),
+  
+  make_option(c("--merged_run_dir"), type="character", default = "dada2/03_dada2_merged_runs_chimera_removed", 
+              help="Directory for run merging, chimera removal", metavar="character"),
+  
+  make_option(c("--trim_length"), type="character", default = "240,400", 
+              help="ASV of length outside the range will be discarded [i.e., insilco size exclusion of ASV - if using -V V3 or V3V4, this parameter is already set]", metavar="character"),
+  
+  make_option(c("--chimera_method"), type="character", default="consensus", 
+              help=" Chimera removal strategy", metavar="character"),
+  
+  make_option(c("--collapseNoMis"), type="logical", default = FALSE, 
+              help=" Perform 100% similarity ASV clustering?", metavar="character"),
+  
+  make_option(c("--export"), type="logical", default = TRUE, 
+              help= "Export pdf, table and intermediate RDS files?", metavar="character"),
+  
+  make_option(c("-T", "--slots"), type="numeric", default = 6, 
+              help="Number of threads to perform the analyses", metavar="numeric"),
+  
+  make_option(c("--seed_value"), type="numeric", default = 123, 
+              help="Seed value for random number generator", metavar="numeric"),
+  
+  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+              help="Directory containing the R functions", metavar="character")
+  
+  
+); 
+opt_parser = OptionParser(option_list = option_list);
+opt = parse_args(opt_parser)
+
+## ------------------------------------------------------------------------
+# parse_args(opt_parser, args = c("--help"))
+# 
+# if(is.null(opt$input_directory)) {
+#   print_help(opt_parser)
+#   stop("You must give an input directory (-i)")
+# }
+# 
+# if(is.null(opt$atropos_binary)) {
+#   print_help(opt_parser)
+#   stop("You must provide path to atropos program (-a)")
+# }
+
+unlist(lapply(strsplit(opt$trim_length, ","), as.numeric)) -> opt$trim_length
+
+source(opt$fun_dir)
+## ------------------------------------------------------------------------
+cat(paste0('\n# Input directory: ',opt$input_directory,'.\n'))
+
+cat(paste0('\n# trim_length',opt$trim_length,'.\n'))
+
+
+cat(paste0('\n# chimera_method',opt$chimera_method,'.\n'))
+cat(paste0('\n# Directory for meged run [output bascially] ? ',opt$merged_run_dir,'.\n'))
+cat(paste0('\n# Chimera removal strategy ',opt$chimera_method,'.\n'))
+
+cat(paste0('\n# Export pdf, table and intermediate RDS files? ',opt$export,'.\n'))
+cat(paste0('\n# slots: ',opt$slots,'.\n'))
+cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
+cat(paste0('\n# Directory for R scripts: ',opt$fun_dir,'.\n'))
+
+## ------------------------------------------------------------------------
+
+run_dada2_mergeRuns_removeBimeraDenovo(seqtab = NULL,
+                                       track = NULL,
+                                       merged_run_dir = opt$merged_run_dir,
+                                       chimera_method = opt$chimera_method,
+                                       trim_length = opt$trim_length,
+                                       nthreads = opt$slots,
+                                       collapseNoMis = opt$collapseNoMis,
+                                       filt_dir = opt$filt_dir,
+                                       export = opt$export,
+                                       seed_value = opt$set_seed,
+                                       return = FALSE)
+
+## ------------------------------------------------------------------------
+
+
+cat("\n\nHere some Info for the record keeping:\n\n")
+print(sessionInfo())
+
+cat("Parameters Used:\n\n")
+
+cat(paste0('\n# Input directory: ',opt$input_directory,'.\n'))
+
+cat(paste0('\n# chimera_method',opt$chimera_method,'.\n'))
+cat(paste0('\n# Directory for meged run [output bascially] ? ',opt$merged_run_dir,'.\n'))
+cat(paste0('\n# Chimera removal strategy ',opt$chimera_method,'.\n'))
+
+cat(paste0('\n# Export pdf, table and intermediate RDS files? ',opt$export,'.\n'))
+cat(paste0('\n# slots: ',opt$slots,'.\n'))
+cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
+cat(paste0('\n# Directory for R scripts: ',opt$fun_dir,'.\n'))
+
+cat("\n############################################################\n")
+cat("All done \n")
+cat("############################################################\n\n")
+
+print(Sys.time())
+
+## ------------------------------------------------------------------------

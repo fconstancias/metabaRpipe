@@ -1,0 +1,155 @@
+#!/usr/bin/env Rscript
+
+rm(list = ls())
+
+cat("\n############################################################\n")
+cat("Starting \n")
+cat("############################################################\n\n")
+
+## ------------------------------------------------------------------------
+
+require("optparse")
+
+## ------------------------------------------------------------------------
+suppressPackageStartupMessages(library("optparse"))
+
+option_list = list(
+  make_option(c("-p", "--phyloseq_path"), type="character", default = NULL, 
+              help="Path of the input phyloseq object", metavar="character"),
+  make_option(c("--vsearch_bin"), type="character", default= "vsearch", 
+              help=" Path to the vsearch bin", metavar="character"),
+  make_option(c("-o", "--output"), type="character", default= "~/", 
+              help="Name of the output directory - If FALSE do not export - which does not make much sense in that context", metavar="character"),
+  make_option(c("--fasta_file"), type="character", default = "pre_lulu.fasta", 
+              help="Intermediate ASV fasta file name", metavar="character"),
+  make_option(c("--match_list_file"), type="character", default = "pre_lulu_vsearch.list.txt", 
+              help="Intermediate match_list_file", metavar="character"),
+  make_option(c("--clust_threshold"), type="numeric", default = 80, 
+              help="Clustering -similarity- threshold (%) used for vsearch clustering", metavar="numeric"),
+  make_option(c("--int_rm"), type="character", default = FALSE,
+              help="Remove intermediate files (ASV fasta and vsearch.list.txt", metavar="numeric"),
+  make_option(c("-T", "--slots"), type="numeric", default = 6, 
+              help="Number of threads to perform the analyses", metavar="character"),
+  make_option(c("--minimum_ratio_type"), type="character", default= "min", 
+              help="sets whether a potential error must have lower abundance than the parent in all samples min (default), 
+              or if an error just needs to have lower abundance on average avg. 
+              Choosing lower abundance on average over globally lower abundance will greatly increase the number of designated errors. 
+              This option was introduced to make it possible to account for non-sufficiently clustered intraspecific variation, 
+              but is not generally recommended, as it will also increase the potential of cluster well-separated, 
+              but co-occuring, sequence similar species.", metavar="character"),
+  make_option(c("--minimum_match"), type="numeric", default= 84, 
+              help="minimum threshold of sequence similarity for considering any OTU 
+              as an error of another can be set (default 84%).", metavar="character"),
+  make_option(c("--minimum_relative_cooccurence"), type="numeric", default= 0.95, 
+              help="minimum co-occurrence rate – i.e. the lower rate of occurrence of the potential error explained 
+              by co-occurrence with the potential parent for considering error state.", metavar="character"),
+  make_option(c("--minimum_ratio"), type="numeric", default= 1, 
+              help="sets the minimim abundance ratio between a potential error and a potential parent to be identified as an error. 
+              If the minimum_ratio_type is set to min (default), the minimum_ratio applies to the lowest observed ration across the samples. 
+              If the minimum_ratio_type is set to avg (default), the minimum_ratio applies to the mean of observed ration across the samples.avg. 
+              (default is 1).", metavar="character"),
+  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+              help="Directory containing the R function", metavar="character"),
+  make_option(c("--seed"), type="numeric", default= 123, 
+              help="seed number for random generator", metavar="character")
+  
+); 
+opt_parser = OptionParser(option_list = option_list);
+opt = parse_args(opt_parser)
+
+## ------------------------------------------------------------------------
+# parse_args(opt_parser, args = c("--help"))
+# 
+# if(is.null(opt$input_directory)) {
+#   print_help(opt_parser)
+#   stop("You must give an input directory (-i)")
+# }
+# 
+# if(is.null(opt$atropos_binary)) {
+#   print_help(opt_parser)
+#   stop("You must provide path to atropos program (-a)")
+# }
+
+source(opt$fun_dir)
+
+
+## ------------------------------------------------------------------------
+cat(paste0('\n# Input phyloseq object: ',opt$phyloseq_path,'.\n'))
+cat(paste0('\n# Output directory: ',opt$output,'.\n'))
+
+cat(paste0('\n# Intermediate ASV fasta file: ',opt$fasta_file,'.\n'))
+cat(paste0('\n# Intermediate vsearch match_list_file: ',opt$match_list_file,'.\n'))
+
+cat(paste0('\n# Vsearch clustering threshold: ',opt$clust_threshold,'.\n'))
+
+cat(paste0('\n# Minimum ratio type: ',opt$minimum_ratio_type,'.\n'))
+cat(paste0('\n# Minimum match: ',opt$minimum_match,'.\n'))
+cat(paste0('\n# Minimum relative cooccurence: ',opt$minimum_relative_cooccurence,'.\n'))
+cat(paste0('\n# Minimum ratio: ',opt$minimum_ratio,'.\n'))
+
+cat(paste0('\n# Remove intermediate files: ',opt$int_rm,'.\n'))
+
+
+cat(paste0('\n# Seed value: ',opt$seed,'.\n'))
+
+cat(paste0('\n# Threads: ',opt$slots,'.\n'))
+
+## ------------------------------------------------------------------------
+
+phyloseq_vsearch_lulu_cluster_ASV(physeq = opt$phyloseq_path,
+                                  vsearch = opt$vsearch_bin, # "vsearch"
+                                  dir = opt$output, # "~/"
+                                  fasta_file = opt$fasta_file, #"pre_lulu.fasta",
+                                  match_list_file = opt$match_list_file, #"pre_lulu_vsearch.list.txt",
+                                  threshold = opt$clust_threshold, #80,
+                                  nthreads = opt$slots,#6
+                                  int_rm = opt$int_rm ,#TRUE,
+                                  seed_value = opt$seed, #123,
+                                  minimum_ratio_type = opt$minimum_ratio_type, #"min",
+                                  minimum_match =  opt$minimum_match, #84,
+                                  minimum_relative_cooccurence = opt$minimum_relative_cooccurence, #0.95,
+                                  minimum_ratio = opt$minimum_ratio, #1, # only if minimum_ratio_type = "avg"
+                                  return = FALSE,
+                                  full_return = FALSE)
+
+  ## ------------------------------------------------------------------------
+  
+  
+  cat("\n\nHere some Info for the record keeping:\n\n")
+  print(sessionInfo())
+  
+  cat("Parameters Used:\n\n")
+  
+  ## ------------------------------------------------------------------------
+  cat(paste0('\n# Input phyloseq object: ',opt$phyloseq_path,'.\n'))
+  cat(paste0('\n# Output directory: ',opt$output,'.\n'))
+  
+  cat(paste0('\n# Intermediate ASV fasta file: ',opt$fasta_file,'.\n'))
+  cat(paste0('\n# Intermediate vsearch match_list_file: ',opt$match_list_file,'.\n'))
+  
+  cat(paste0('\n# Vsearch clustering threshold: ',opt$clust_threshold,'.\n'))
+  
+  cat(paste0('\n# Minimum ratio type: ',opt$minimum_ratio_type,'.\n'))
+  cat(paste0('\n# Minimum match: ',opt$minimum_match,'.\n'))
+  cat(paste0('\n# Minimum relative cooccurence: ',opt$minimum_relative_cooccurence,'.\n'))
+  cat(paste0('\n# Minimum ratio: ',opt$minimum_ratio,'.\n'))
+  
+  cat(paste0('\n# Remove intermediate files: ',opt$int_rm,'.\n'))
+  
+  
+  cat(paste0('\n# Seed value: ',opt$seed,'.\n'))
+  
+  cat(paste0('\n# Threads: ',opt$slots,'.\n'))
+  
+  
+  cat("\n############################################################\n")
+  cat("All done \n")
+  cat("############################################################\n\n")
+  
+  print(Sys.time())
+  
+  ## ------------------------------------------------------------------------
+  
+  
+  
+  

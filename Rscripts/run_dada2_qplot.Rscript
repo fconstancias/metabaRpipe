@@ -1,0 +1,112 @@
+#!/usr/bin/env Rscript
+
+rm(list = ls())
+
+cat("\n############################################################\n")
+cat("Starting \n")
+cat("############################################################\n\n")
+
+## ------------------------------------------------------------------------
+
+require("optparse")
+
+## ------------------------------------------------------------------------
+suppressPackageStartupMessages(library("optparse"))
+
+option_list = list(
+  
+  make_option(c("-i","--input"), type="character", default = "dada2/00_atropos_primer_removed", 
+              help="Directory including reads to perform quality plot against - not necessary cut_dir", metavar="character"),
+  
+  make_option(c("--file_pattern "), type="character", default = c("*_R1_*.fastq.gz","*_R2_*.fastq.gz"), 
+              help="Patterns for R1 and R2", metavar="character"),
+  
+  make_option(c("--qplot_dir"), type="character", default = "dada2/01_dada2_quality_profiles", 
+              help="Directory for output", metavar="character"),
+  
+  make_option(c("--prop.sample"), type="numeric", default = 20, 
+              help=" % of samples to run qplot against", metavar="character"),
+  
+  make_option(c("--aggregate"), type="logical", default = TRUE, 
+              help=" aggregate quality plots", metavar="character"),
+  
+  make_option(c("--sep"), type="character", default = "[^_]+", 
+              help="regex pattern to identify sample names  [default: after first _]", metavar="character"),
+  
+  make_option(c("--export"), type="logical", default = TRUE, 
+              help= "Export pdf, table and intermediate RDS files?", metavar="character"),
+  
+  make_option(c("--seed_value"), type="numeric", default = 123, 
+              help="Seed value for random number generator", metavar="numeric"),
+  
+  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+              help="Directory containing the R functions", metavar="character")
+  
+  
+); 
+opt_parser = OptionParser(option_list = option_list);
+opt = parse_args(opt_parser)
+
+## ------------------------------------------------------------------------
+# parse_args(opt_parser, args = c("--help"))
+# 
+# if(is.null(opt$input_directory)) {
+#   print_help(opt_parser)
+#   stop("You must give an input directory (-i)")
+# }
+# 
+# if(is.null(opt$atropos_binary)) {
+#   print_help(opt_parser)
+#   stop("You must provide path to atropos program (-a)")
+# }
+
+unlist(lapply(strsplit(opt$file_pattern, ","), as.character)) -> opt$file_pattern
+
+
+source(opt$fun_dir)
+## ------------------------------------------------------------------------
+cat(paste0('\n# Input directory: ',opt$cut_dir,'.\n'))
+
+cat(paste0('\n# Export pdf, table and intermediate RDS files? ',opt$export,'.\n'))
+cat(paste0('\n# cut_pattern: ',opt$file_pattern,'.\n'))
+
+cat(paste0('\n# qplot_dir: ',opt$qplot_dir,'.\n'))
+
+cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
+cat(paste0('\n# Directory for R script: ',opt$fun_dir,'.\n'))
+
+## ------------------------------------------------------------------------
+
+run_dada2_qplot(prop.sample = opt$prop.sample, #20,
+                aggregate =  opt$aggregate, #TRUE,
+                cut_dir = opt$input,
+                qplot_dir = opt$qplot_dir, #"dada2/01_dada2_quality_profiles",
+                cut_file_pattern = opt$file_pattern, #c("_primersout_R1_.fastq.gz","_primersout_R2_.fastq.gz"),
+                seed_value = opt$set_seed,
+                sep = opt$sep, #"[^_]+",
+                export = opt$export)
+
+## ------------------------------------------------------------------------
+
+
+cat("\n\nHere some Info for the record keeping:\n\n")
+print(sessionInfo())
+
+cat("Parameters Used:\n\n")
+cat(paste0('\n# Input directory: ',opt$cut_dir,'.\n'))
+
+cat(paste0('\n# Export pdf, table and intermediate RDS files? ',opt$export,'.\n'))
+cat(paste0('\n# cut_pattern: ',opt$file_pattern,'.\n'))
+
+cat(paste0('\n# qplot_dir: ',opt$qplot_dir,'.\n'))
+
+cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
+cat(paste0('\n# Directory for R script: ',opt$fun_dir,'.\n'))
+
+cat("\n############################################################\n")
+cat("All done \n")
+cat("############################################################\n\n")
+
+print(Sys.time())
+
+## ------------------------------------------------------------------------

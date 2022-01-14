@@ -1,0 +1,99 @@
+#!/usr/bin/env Rscript
+
+rm(list = ls())
+
+cat("\n############################################################\n")
+cat("Starting \n")
+cat("############################################################\n\n")
+
+## ------------------------------------------------------------------------
+
+require("optparse")
+
+## ------------------------------------------------------------------------
+suppressPackageStartupMessages(library("optparse"))
+
+
+option_list = list(
+  make_option(c("-p", "--phyloseq_path"), type="character", default = NULL, 
+              help="Path of the input phyloseq object", metavar="character"),
+  make_option(c("-o", "--output"), type="character", default= "~/", 
+              help="Name of the output directory - If FALSE do not export - which does not make much sense in that context", metavar="character"),
+  make_option(c("--clust_threshold"), type="numeric", default = 97, 
+              help="Clustering -similarity- threshold (%)", metavar="numeric"),
+  make_option(c("--clust_method"), type="character", default = "complete",
+              help="Clustering method used by DECIPHER", metavar="character"),
+  make_option(c("-T", "--slots"), type="numeric", default = 6, 
+              help="Number of threads to perform the analyses", metavar="character"),
+  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+              help="Directory containing the R functions", metavar="character")
+  
+); 
+opt_parser = OptionParser(option_list = option_list);
+opt = parse_args(opt_parser)
+
+## ------------------------------------------------------------------------
+# parse_args(opt_parser, args = c("--help"))
+# 
+# if(is.null(opt$input_directory)) {
+#   print_help(opt_parser)
+#   stop("You must give an input directory (-i)")
+# }
+# 
+# if(is.null(opt$atropos_binary)) {
+#   print_help(opt_parser)
+#   stop("You must provide path to atropos program (-a)")
+# }
+
+source(opt$fun_dir)
+
+
+## ------------------------------------------------------------------------
+cat(paste0('\n# Input phyloseq object: ',opt$phyloseq_path,'.\n'))
+cat(paste0('\n# Output directory: ',opt$output,'.\n'))
+
+cat(paste0('\n# Clustering -similarity- threshold: ',opt$clust_threshold,'.\n'))
+cat(paste0('\n# Clustering method: ',opt$clust_method,'.\n'))
+
+cat(paste0('\n# Threads: ',opt$slots,'.\n'))
+
+## ------------------------------------------------------------------------
+
+
+phyloseq_DECIPHER_cluster_ASV(physeq = opt$phyloseq_path, # readRDS("data/processed/physeq_update_11_1_21.RDS") %>% subset_taxa(taxa_sums(physeq) > 1000) -> physeq
+                              threshold = opt$clust_threshold,#97,
+                              nthreads = opt$slots,
+                              method = opt$clust_method, 
+                              showPlot = FALSE,
+                              export = opt$output,
+                              return = FALSE,
+                              full_return = FALSE)
+
+
+## ------------------------------------------------------------------------
+
+
+cat("\n\nHere some Info for the record keeping:\n\n")
+print(sessionInfo())
+
+cat("Parameters Used:\n\n")
+
+## ------------------------------------------------------------------------
+cat(paste0('\n# Input phyloseq object: ',opt$phyloseq_path,'.\n'))
+cat(paste0('\n# Output directory: ',opt$output,'.\n'))
+
+cat(paste0('\n# Clustering -similarity- threshold: ',opt$clust_threshold,'.\n'))
+cat(paste0('\n# Clustering method: ',opt$clust_method,'.\n'))
+
+cat(paste0('\n# Threads: ',opt$slots,'.\n'))
+
+cat("\n############################################################\n")
+cat("All done \n")
+cat("############################################################\n\n")
+
+print(Sys.time())
+
+## ------------------------------------------------------------------------
+
+
+

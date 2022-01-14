@@ -1,0 +1,110 @@
+#!/usr/bin/env Rscript
+
+rm(list = ls())
+
+cat("\n############################################################\n")
+cat("Starting \n")
+cat("############################################################\n\n")
+
+## ------------------------------------------------------------------------
+
+require("optparse")
+
+## ------------------------------------------------------------------------
+suppressPackageStartupMessages(library("optparse"))
+
+option_list = list(
+  
+  make_option(c("-i", "--input_directory"), type="character", default=NULL, 
+              help="Path of the input directory containing reads in their respective run sub-directories", metavar="character"),
+  
+  make_option(c("--fwd_primer"), type="character", default = NULL, 
+              help="Sequence of the Fwd primer to remove", metavar="character"),
+  
+  make_option(c("--rev_primer"), type="character", default = NULL, 
+              help="Sequence of the Rev primer to remove", metavar="character"),
+  
+  make_option(c("--file_pattern"), type="character", default= c("*_R1_*.gz","*_R2_*.gz"), 
+              help="Pattern to determine R1 and R2 files", metavar="character"),
+  
+  make_option(c("--sep"), type="character", default = "[^_]+", 
+              help="regex pattern to identify sample names  [default: after first _]", metavar="character"),
+  
+  make_option(c("--n_samples"), type="numeric", default = 1, 
+              help="Number of samples to perform the analysis", metavar="character"),
+  
+  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+              help="Directory containing the R functions", metavar="character"),
+  
+  make_option(c("--export"), type="character", default= FALSE, 
+              help="Path of the the output tsv file", metavar="character")
+); 
+opt_parser = OptionParser(option_list = option_list);
+opt = parse_args(opt_parser)
+
+## ------------------------------------------------------------------------
+# parse_args(opt_parser, args = c("--help"))
+# 
+# if(is.null(opt$input_directory)) {
+#   print_help(opt_parser)
+#   stop("You must give an input directory (-i)")
+# }
+# 
+# if(is.null(opt$atropos_binary)) {
+#   print_help(opt_parser)
+#   stop("You must provide path to atropos program (-a)")
+# }
+
+source(opt$fun_dir)
+
+## ------------------------------------------------------------------------
+unlist(lapply(strsplit(opt$file_pattern, ","), as.character)) -> opt$file_pattern
+
+
+cat(paste0('\n# Input directory: ',opt$input_directory,'.\n'))
+
+
+cat(paste0('\n# Fwd Primer sequence: ',opt$fwd_primer,'.\n'))
+cat(paste0('\n# Rev Primer sequence: ',opt$rev_primer,'.\n'))
+
+cat(paste0('\n# Number of samples: ',opt$n_samples,'.\n'))
+cat(paste0('\n# output will be exported in : ',opt$export,'.\n'))
+
+## ------------------------------------------------------------------------
+
+check_primers(path_dir = opt$input_directory,
+              file_pattern = opt$file_pattern,
+              n_samples = opt$n_samples,
+              FWD = opt$fwd_primer,
+              REV = opt$rev_primer,
+              sep = opt$sep,
+              export = opt$export)
+
+
+## ------------------------------------------------------------------------
+
+
+cat("\n\nHere some Info for the record keeping:\n\n")
+print(sessionInfo())
+
+cat("Parameters Used:\n\n")
+
+
+cat(paste0('\n# Input directory: ',opt$input_directory,'.\n'))
+
+
+cat(paste0('\n# Fwd Primer sequence: ',opt$fwd_primer,'.\n'))
+cat(paste0('\n# Rev Primer sequence: ',opt$rev_primer,'.\n'))
+
+cat(paste0('\n# Number of samples: ',opt$n_samples,'.\n'))
+cat(paste0('\n# output will be exported in : ',opt$export,'.\n'))
+
+
+
+cat("\n############################################################\n")
+cat("All done \n")
+cat("############################################################\n\n")
+
+print(Sys.time())
+
+## ------------------------------------------------------------------------
