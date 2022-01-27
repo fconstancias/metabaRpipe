@@ -1,7 +1,7 @@
-#metabaRpipe:
+# metabaRpipe:
 
 
-# Configure a dedicated conda environment:
+## Configure a dedicated conda environment:
 
 
 ### Install conda
@@ -130,7 +130,7 @@ dada2/
 A `phyloseq` object has been generated and is waiting for you with the provided  metadata:
 
 ```R
-librayry(phyloseq)
+library(phyloseq)
 readRDS("dada2/phyloseq.RDS")
 phyloseq-class experiment-level object
 otu_table()   OTU Table:         [ 322 taxa and 6 samples ]
@@ -140,12 +140,14 @@ refseq()      DNAStringSet:      [ 322 reference sequences ]
 ```
 
 
-In addition, since `--save_out test_pipe_Rscript.RDS ` is specified all the outputs are also saved within this `R` object.
+In addition, since `--save_out test_pipe_Rscript.RDS` is specified all the outputs are also saved within this `R` object.
 
 ```R
 readRDS("test_pipe_Rscript.RDS") -> out
 
 ls(out)
+```
+```
 [1] "filtering_denoising" "merging"             "physeq"             
 [4] "qplot"               "taxo" 
 ```
