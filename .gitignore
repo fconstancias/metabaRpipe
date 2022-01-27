@@ -45,7 +45,6 @@ fasta
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-*.gz
 *.fasta
 dada2/03_dada2_mergerun_collapsenomismatch_NO/no-chim-seqtab.rds
 dada2/03_dada2_mergerun_collapsenomismatch_NO/physeq.rds
