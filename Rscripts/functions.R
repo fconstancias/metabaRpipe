@@ -201,7 +201,11 @@ run_atropos <- function(raw_files_path,
     fnFs <- fnFs[exists]
     fnRs <- fnRs[exists]
     
+    
     if(length(fnRs) != length(fnFs)) stop("Forward and reverse files do not match.")
+    
+    if(length(fnRs) == 0) stop("No raw fastq files detected, please check...")
+    
     
     sample.names <- basename(fnFs) %>%
       str_extract(paste0(sep))
