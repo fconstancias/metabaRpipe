@@ -316,7 +316,7 @@ run_dada2_qplot <- function(prop.sample = 20,
       str_extract(paste0(sep))
     
     cat(paste0('\n# sample names list starts with : \n'))
-    head(sample.names)
+    cat(sample.names)
     
     ## ------------------------------------------------------------------------
     ### Helper functions to improve  plots
@@ -481,7 +481,7 @@ run_dada2_filter_denoise_merge_reads <- function(trunclen,
       str_extract(paste0(sep))
     
     cat(paste0('\n# sample names list starts with : \n'))
-    head(sample.names)
+    cat(sample.names)
     
     if(sample.names %>% length()  <= 1) stop("There is something wrong with the provided samples or you just provided one sample.")
     
@@ -2655,6 +2655,7 @@ run_dada2_pipe <- function(raw_files_path,
                            taxa_dir = "dada2/04_dada2_taxonomy",
                            sep = "[^_]+",
                            V = "V4",
+                           rm_primers = TRUE,
                            PRIMER_F,
                            PRIMER_R,
                            tax_threshold = 60,
@@ -2745,21 +2746,33 @@ run_dada2_pipe <- function(raw_files_path,
     minover = 60
     
   }
-  cat(paste0('\n##',"running run_atropos() '\n\n'"))
   
-  run_atropos(raw_files_path = raw_files_path,
-              atropos = atropos_bin,
-              PRIMER_F = PRIMER_F,
-              PRIMER_R = PRIMER_R,
-              NSLOTS = SLOTS,
-              cut_dir = cut_dir,
-              raw_file_pattern = raw_file_pattern,
-              MIN_L = 80,
-              sep = sep
-              
-  )
+  
+  if(rm_primers == TRUE){
+    cat(paste0('\n##',"running run_atropos() '\n\n'"))
+    cat(paste0(' input dir = ', raw_files_path))
+    
+    run_atropos(raw_files_path = raw_files_path,
+                atropos = atropos_bin,
+                PRIMER_F = PRIMER_F,
+                PRIMER_R = PRIMER_R,
+                NSLOTS = SLOTS,
+                cut_dir = cut_dir,
+                raw_file_pattern = raw_file_pattern,
+                MIN_L = 80,
+                sep = sep
+                
+    )
+  }
+  if(rm_primers == FALSE){
+    cut_dir = raw_files_path
+    cut_file_pattern = raw_file_pattern
+  }
+
   
   cat(paste0('\n##',"running run_dada2_qplot() '\n\n'"))
+  
+  cat(paste0('\n## input dir = ', cut_dir))
   
   run_dada2_qplot(prop.sample = 20,
                   aggregate = TRUE,
@@ -2771,8 +2784,10 @@ run_dada2_pipe <- function(raw_files_path,
   
   
   cat(paste0('\n##',"running run_dada2_filter_denoise_merge_reads() '\n\n'"))
+  cat(paste0(' input dir = ', cut_dir))
   
   run_dada2_filter_denoise_merge_reads(cut_dir = cut_dir,
+                                       cut_file_pattern = cut_file_pattern,
                                        sep = sep,
                                        filt_dir = filt_dir,
                                        trunclen = trunclen,

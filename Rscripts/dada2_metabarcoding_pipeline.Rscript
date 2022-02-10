@@ -32,6 +32,9 @@ option_list = list(
   make_option(c("--cut_pattern"), type="character", default = c("_primersout_R1_.fastq.gz","_primersout_R2_.fastq.gz"), 
               help="Patterns for R1 and R2 of atropos files", metavar="character"),
   
+    make_option(c("--rm_primers"), type="logical", default = TRUE, 
+              help="Perform atropos PCR primer check & removal ?", metavar="character"),
+  
   make_option(c("--filt_dir"), type="character", default = "dada2/02_dada2_filtered_denoised_merged", 
               help="Directory for filtered reads", metavar="character"),
   
@@ -185,6 +188,7 @@ run_dada2_pipe(raw_files_path = opt$input_directory,
                taxa_dir = opt$taxa_dir,
                sep = opt$sep,
                V = opt$preset,
+               rm_primers = opt$rm_primers,
                PRIMER_F =  opt$PRIMER_F,
                PRIMER_R = opt$PRIMER_R,
                tax_threshold = opt$tax_threshold,
