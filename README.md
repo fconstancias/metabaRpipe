@@ -336,7 +336,54 @@ Options:
 ```
 
 
+## ETH FBT users:
 
+Please use the following commands to process the data targeting 16S V4 region using the PCR primers and parameters we use in the FBT group from the C18 bioinformatic workstation. Everything is installed and configure, you can follow the steps below to analyse your data.
+
+* First please book the  C18 bioinformatic workstation using the [calendar](https://hest.sp.ethz.ch/bt-calendars/_layouts/15/start.aspx#/Lists/D42%20PharmaBiome%20office).
+
+* Check the information to access the C18 bioinformatic workstation from the `p/drive/` under  
+
+* Then, create a directory were you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal if you already have experience.
+
+* The next step is to organise the raw sequencing files in Miseq-run-specific sub-directories of a raw directory as explained in the **Raw data structure** section above. It should look like `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
+
+* Open the terminal from the dock.
+
+* Using the terminal, navigate to the directory you have created `cd` *i.e.*, change directory command.
+
+```
+cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
+```
+
+* Activate the conda environment. 
+
+```
+conda activate metabarcodingRpipeline
+```
+
+* Run the pipeline with the default V4 FBT parameters:
+
+```
+Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarcoding_pipeline.Rscript \
+-i raw/ -T 4 \
+--db  /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
+-f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R \
+--metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
+```
+
+* Add a phylogenetic tree of the ASV directly to the R phyloseq object:
+
+```
+Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phylogeny_to_phyloseq.Rscript -p dada2/phyloseq.RDS -o dada2/phyloseq_phylo -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R > add_phylo_logs.txt 2>&1
+
+```
+
+* Export qiime2 compatible files
+
+```
+Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript -i dada2/phyloseq_phylo/phyloseq_phylo.RDS -o dada2/qiime2 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
+```
 
 
 
@@ -489,11 +536,10 @@ ps_tax_phylo_meta
 
 ## TODO:
 
-- <s>add phylogenetic tree to a phyloseq object</s>
-- change name
 - add https://zenodo.org/account/settings/github/ -> DOI
-- Faster method for phylogenetic reconstruction (e.g., MAFFT + FastTree)
-- add possibility to skip primer removal: skipping run_atropos() or changing atropos parameter?
+- <s>add phylogenetic tree to a phyloseq object</s>
+- <s>hange name</s>
+- <s>add possibility to skip primer removal: skipping run_atropos() or changing atropos parameter?</s>
 - <s>replace taxonomic assignments of a phyloseq object using alternative approach/ database</s>
 - <s>cluster ASV using DECIPHER</s>
 - <s>cluster ASV using vsearch lulu</s>
