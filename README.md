@@ -342,7 +342,7 @@ Please use the following commands to process the data targeting 16S V4 region us
 
 * First please book the  C18 bioinformatic workstation using the [calendar](https://hest.sp.ethz.ch/bt-calendars/_layouts/15/start.aspx#/Lists/D42%20PharmaBiome%20office).
 
-* Check the information to access the C18 bioinformatic workstation from the `p/drive/` under  
+* Check the information to access the C18 bioinformatic workstation from the `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf` on `slide 16`.  
 
 * Then, create a directory were you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal if you already have experience.
 
@@ -362,12 +362,13 @@ cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
 conda activate metabarcodingRpipeline
 ```
 
-* Run the pipeline with the default V4 FBT parameters:
+* Run the pipeline with the default V4 FBT parameters - press enter to start:
 
 ```
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarcoding_pipeline.Rscript \
 -i raw/ -T 4 \
---db  /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
+--db  /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
+--db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R \
 --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
@@ -385,7 +386,7 @@ Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phyloge
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript -i dada2/phyloseq_phylo/phyloseq_phylo.RDS -o dada2/qiime2 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
 ```
 
-
+You now have everything ready for analysis using R your preferred platform!
 
 
 
