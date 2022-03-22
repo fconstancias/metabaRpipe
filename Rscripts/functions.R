@@ -2389,6 +2389,7 @@ phyloseq_picrust2 <- function(physeq = NULL, # readRDS("data/processed/physeq_up
                               regroup_map = FALSE, #"/Users/fconstan/miniconda3/envs/picrust2/lib/python3.6/site-packages/picrust2/default_files/pathway_mapfiles/ec_level4_to_metacyc_rxn.tsv",
                               nthreads = 6,
                               m = "mp",
+                              seed = 123456,
                               no_gap_fill = FALSE,
                               add_description = FALSE,
                               load_picrust2_data = FALSE, #could generate large files...

@@ -52,9 +52,6 @@ option_list = list(
   make_option(c("--add_description"), type="logical", default= FALSE, 
               help="add description pf Pway", metavar="character"),
   
-  make_option(c("--int_rm"), type="logical", default= TRUE, 
-              help="remove intermediate files", metavar="character"),
-  
   make_option(c("--load_picrust2_data"), type="logical", default= FALSE, 
               help="import picrust2 data: could generate large files... ", metavar="character"),
   
@@ -112,7 +109,7 @@ cat(paste0('\n# add_description : ',opt$add_description,'.\n'))
 cat(paste0('\n# load_picrust2_data : ',opt$load_picrust2_data,'.\n'))
 
 cat(paste0('\n# return : ',opt$return,'.\n'))
-cat(paste0('\n# int_rm : ',opt$int_rm,'.\n'))
+# cat(paste0('\n# int_rm : ',opt$int_rm,'.\n'))
 
 cat(paste0('\n# Threads: ',opt$slots,'.\n'))
 
@@ -136,8 +133,7 @@ phyloseq_picrust2(physeq = opt$phyloseq_path,
                   no_gap_fill = opt$no_gap_fill,
                   add_description = opt$add_description,
                   load_picrust2_data = opt$load_picrust2_data, #could generate large files...
-                  return = opt$return, # true / false or path of object
-                  int_rm = opt$int_rm)
+                  return = opt$return)
 
 ## ------------------------------------------------------------------------
 
@@ -168,7 +164,7 @@ cat(paste0('\n# add_description : ',opt$add_description,'.\n'))
 cat(paste0('\n# load_picrust2_data : ',opt$load_picrust2_data,'.\n'))
 
 cat(paste0('\n# return : ',opt$return,'.\n'))
-cat(paste0('\n# int_rm : ',opt$int_rm,'.\n'))
+# cat(paste0('\n# int_rm : ',opt$int_rm,'.\n'))
 
 cat(paste0('\n# Threads: ',opt$slots,'.\n'))
 
