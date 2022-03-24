@@ -2664,6 +2664,7 @@ run_dada2_pipe <- function(raw_files_path,
                            pool = "pseudo",
                            trim_length = c(240,400),
                            trunclen = c(260,250),
+                           truncQ = 6,
                            maxee = c(3,4),
                            minLen = 100,
                            minover = 15,
@@ -2691,6 +2692,17 @@ run_dada2_pipe <- function(raw_files_path,
     maxee = c(3,4)
     minLen = 120
     minover = 40
+  } 
+  if(V == "V4-NIH") {
+    
+    PRIMER_F = "GTGYCAGCMGCCGCGGTAA"
+    PRIMER_R = "GGACTACNVGGGTWTCTAAT" 
+    trim_length = c(220,280)
+    truncQ = 4
+    trunclen =  c(170,140)
+    maxee = c(4,5)
+    minLen = 120
+    minover = 20
   } 
   if(V == "V4-Addition-PRO") {
     
