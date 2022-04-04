@@ -2900,7 +2900,7 @@ run_dada2_pipe <- function(raw_files_path,
 
 physeq_add_metadata <- function(physeq,
                                 metadata,
-                                sample_column = "Sample"){
+                                sample_column = "sample_name"){
   
   ## ------------------------------------------------------------------------
   require(tidyverse); require(phyloseq)
