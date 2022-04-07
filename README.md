@@ -1,4 +1,4 @@
-# metabaRpipe:
+# metabaRpipe
 
 This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
@@ -180,7 +180,7 @@ There are several outputs generated during the steps performed:
 * the quality filtering, error learning, ASV inference and Fwd and Rev reads merging: `02_dada2_filtered_denoised_merged`
 * the combinaiton of the data proceed from different runs and the removal of chimeras: `03_dada2_merged_runs_chimera_removed`
 * the taxonomy assignments: `04_dada2_taxonomy`
-* a `phyloseq` object has been generated and is waiting for you with the provided metadata:
+* a `phyloseq` object including all the data.
 
 ```R
 library(phyloseq)
@@ -191,7 +191,7 @@ sample_data() Sample Data:       [ 6 samples by 18 sample variables ]
 tax_table()   Taxonomy Table:    [ 322 taxa by 7 taxonomic ranks ]
 refseq()      DNAStringSet:      [ 322 reference sequences ]
 ```
-This object contains the Amplicon Sequence Variants (ASV), their sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This allows easy handling of the data.
+This object contains the `Amplicon Sequence Variants (ASV),` their sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This enable an easy handling of all those facet of the data. 
 
 More informations regarding `phyloseq` object can be found [here](https://joey711.github.io/phyloseq/).
 
@@ -205,14 +205,14 @@ ls(out)
 [4] "qplot"               "taxo" 
 ```
 
-For more details, please check the [dada2 orignial tutorial](https://benjjneb.github.io/dada2/tutorial.html).
+For more details, please check the [dada2 original tutorial](https://benjjneb.github.io/dada2/tutorial.html).
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Raw data organisation:
 
 Organisation of the raw sequencing data is crucial.
 
-Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific directory since error learning and ASV inference has to be perform on a run basis. If you are only analyzing one sequencing run, simply add only one subdirectory.
+Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific directory since error learning and ASV inference has to be perform on a run basis. If you are only analysing one sequencing run, simply add only one subdirectory.
 
 
 ```bash
@@ -266,9 +266,9 @@ The sequences ```CCTAYGGGRBGCASCAG``` and ```GGACTACNNGGGTATCTAAT``` will be sea
 
 Fwd and Rev reads will by truncated after ```260``` and ```250``` nucleotide positions, reads shorter then `160` nucleotides will be removed as well as the Fwd with a maximum expected error more then `4` and Rev of `5`. `10` nucleotides will be used to merged denoised Fwd and Rev reads and only ASV `>240 length <600` will be kept.
 
-For more details, please check the dada2 orignial [tutorial](https://benjjneb.github.io/dada2/tutorial.html).
+For more details, please check the dada2 original [tutorial](https://benjjneb.github.io/dada2/tutorial.html).
 
-You can modify the `${MY_DIR}/metabaRpipe/Rscripts/functions.R` script by adding any `preset` of your choice adding another if statement and using the same variable names. Then  `--preset mypreset` can be used to call the parameters you defined in `${MY_DIR}/metabaRpipe/Rscripts/functions.R` when running the script ```Rscript ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript ```. This allows automatisation of the process and the possiblity to run the pipeline from your HPC cluster.
+You can modify the `${MY_DIR}/metabaRpipe/Rscripts/functions.R` script by adding any `preset` of your choice adding another if statement and using the same variable names. Then  `--preset mypreset` can be used to call the parameters you defined in `${MY_DIR}/metabaRpipe/Rscripts/functions.R` when running the script ```Rscript ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript ```. This allows automatisation of the process and the possibility to run the pipeline from your HPC cluster.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -492,7 +492,7 @@ N.B.: The phyloseq object should include the ASV sequences stored as `refseq()` 
 
 * The `run_phyloseq_dada2_tax.Rscript` Rscript allow to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. 
 
-The `dada2 formated` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html).
+The `dada2 formatted` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html).
 
 Below the options we can specify to the script:
 
@@ -556,7 +556,7 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_dada2_tax.Rscript \
 ```
 We could also run the function directly within R/ Rstudio:
 
-Below the orignial `tax_table()`
+Below the original `tax_table()`
 
 ```r
 require(tidyverse); require(phyloseq)
