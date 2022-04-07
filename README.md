@@ -1,4 +1,7 @@
-# metabaRpipe
+# metabaRpipe 
+[![DOI](https://zenodo.org/badge/447980964.svg)](https://zenodo.org/badge/latestdoi/447980964)
+
+
 
 This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
