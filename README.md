@@ -1,35 +1,44 @@
 # metabaRpipe:
 
-This pipeline is based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). Cite authors who deserve credits for their valuable work!
+This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). Cite authors who deserve credits for their valuable work!
 
 ## Installation:
 ### Configure a dedicated conda environment:
 
-#### Install conda
+1. [Install conda](<https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html>)
+*e.g.*, for MAC users:`bash Miniconda3-latest-MacOSX-x86_64.sh`
 
-<https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html>
+2. Create a dedicated conda environment:
 
-e.g., for MAC users:
-`bash Miniconda3-latest-MacOSX-x86_64.sh`
 
-#### Create a dedicated conda environment:
+```bash
 	conda create -n metabaRpipe -y
-#### Activate the conda environment:
+```
+
+3. Activate the conda environment:
+
+```bash
 	conda activate metabaRpipe
-#### Install R and atropos:
+```
+4. Install `R` and `atropos` and `devtools` R package:
+
+```bash
 	conda install -c conda-forge r-base=4.1 -y
 	conda install -c bioconda atropos=1.1.25 -y
 	conda install -c conda-forge r-devtools -y
+```
+5. Confirm R was correctly installed within the conda environment:
 
-#### Confirm R was correctly installed within the conda environment:
-
+```bash
  	which R
-	
-which should result in:
+```	
+which should result in something like this, indicating you will use R installed within your conda environment.
 
 	/Users/xxx/miniconda3/envs/metabaRpipe/bin/R
 	
-#### Start R from the terminal an install thenecessary R packages:
+6. Start `R` from the terminal an install the required `R packages`:
+
+```R
 	R
 	
 	install.packages("optparse", repos = "https://cloud.r-project.org")
@@ -43,35 +52,38 @@ which should result in:
 	BiocManager::install("phyloseq", update = FALSE)
 
 	quit(save = "no")
+```
 
-### Clone the repository:
+6. Clone the `metabaRpipe` repository
 
-This step is required to get the Rscripts locally.
+This step is required to get the `Rscripts` locally.
 
 Change the directory where you would like to clone the repository.
 
+```bash
 	MY_DIR=/path_to_mydir/whereIwant/metabaRpipe/to/be/installed/
 	cd ${MY_DIR}
-
+```
 Use ``git clone`` to clone on your computer the repository including the functions and test data.
 
+```bash
 	git clone https://github.com/fconstancias/metabaRpipe.git
+```
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Running the pipeline:
 
-Everything is now ready to analyse your raw data.
-There are to way to proceed: 
-
-* working from the terminal using Rscripts, enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one single command.
+Everything is now ready to analyse your raw data. We will from the terminal using `Rscripts`, enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one single command.
 
 
-First, activate the dedicated conda environment:
+* First, activate the dedicated conda environment:
 
+```bash
 	conda activate metabaRpipe
+```
 
-
-Use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
+* Use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
 
 For instance, using the `test-data` available from the repository:
 
@@ -89,17 +101,17 @@ The ``> mylogs.txt 2>&1`` trick will redirect what is printed on the screen to a
 
 If you encounter the following error:
 
-```
+```bash
 /metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript: Permission denied
 
 ```
 Mark the file as executable using `chmod`.
 
-```
+```bash
 chmod +x ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript
 ```
 
-* The other option is to work within R using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R` - examples will come later.
+The other option is to work within` R` using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R` - examples will come later.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Exploring the outputs:
@@ -181,10 +193,8 @@ If `--save_out test_pipe_Rscript.RDS` is specified, all the outputs are also sav
 
 ```R
 readRDS("test_pipe_Rscript.RDS") -> out
-
 ls(out)
-```
-```
+
 [1] "filtering_denoising" "merging"             "physeq"             
 [4] "qplot"               "taxo" 
 ```
@@ -194,7 +204,7 @@ For more details, please check the [dada2 orignial tutorial](https://benjjneb.gi
 
 ## Raw data organisation:
 
-Please pay attention to structure of the raw sequencing data:
+Organisation of the raw sequencing data is crucial.
 
 Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific directory since error learning and ASV inference has to be perform on a run basis. If you are only analyzing one sequencing run, simply add only one subdirectory.
 
@@ -229,7 +239,7 @@ The ```--preset``` option is an important parameter here since it will be used t
 Depending on the library preparation protocol you could also skip the PCR primer removal step using `--rm_primers FALSE`
 
 
-```
+```bash
 open ${MY_DIR}/metabaRpipe/Rscripts/functions.R 
 ...
   if(V == "V3V4"){
@@ -274,19 +284,19 @@ You can use the following commands to process the data targeting 16S V4 region u
 
 * Using the terminal, navigate to the directory you have created `cd` *i.e.*, change directory command.
 
-```
+```bash
 cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
 ```
 
 * Activate the conda environment. 
 
-```
+```bash
 conda activate metabarcodingRpipeline
 ```
 
 * Run the pipeline with the default V4 FBT parameters - press enter to start:
 
-```
+```bash
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarcoding_pipeline.Rscript \
 -i raw/ -T 4 \
 --db  /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
@@ -297,25 +307,29 @@ Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarco
 
 * Add a phylogenetic tree of the ASV directly to the R phyloseq object:
 
-```
+```bash
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phylogeny_to_phyloseq.Rscript -p dada2/phyloseq.RDS -o dada2/phyloseq_phylo -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R > add_phylo_logs.txt 2>&1
 
 ```
 
 * Export qiime2 compatible files:
 
-```
+```bash
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript -i dada2/phyloseq_phylo/phyloseq_phylo.RDS -o dada2/qiime2 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
 ```
 
 You now have everything ready for analysis using your preferred platform !
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ## Getting some help:
 
 
-All the options can be access using `--help`.
+* Options from a specific Rscript can be access using `--help` argument.
 
-```${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript --help
+
+```bash
+${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript --help
 
 Usage: /Users/test/Documents/GitHub/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript [options]
 
@@ -441,39 +455,40 @@ Options:
 ```
 
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 ## Additional functionalities:
 
 For additional functionalities (*i.e.*, post ASV clustering using vsearch/lulu & picrust2 functional potential estimation - please install the following tools:
-### R packages - similarly as done before:
-	conda activate metabaRpipe
-	R
-	devtools::install_github("tobiasgf/lulu")
-	devtools::install_github("ycphs/openxlsx")
-	devtools::install_github("mikemc/speedyseq")
-### vsearch in the dedicated conda environment:
-	conda activate metabaRpipe 
-	conda install -c bioconda vsearch -y
-	
-### picrust2 in the dedicated conda environment:
-	conda activate metabaRpipe
-	conda install picrust2 -y
 
-## Add phylogenetic tree to a phyloseq object:
+### 1.  Computing an ASV-phylogenetic tree in a phyloseq object:
 
-Based on <https://f1000research.com/articles/5-1492>. It might take quite some time depending on your configuration and the overall richness of your phyloseq object. This is therefore not computed by default running the pipeline.
+Based on the approach described[ here](<https://f1000research.com/articles/5-1492>). It can be intensive depending on your setup and the overall richness of your phyloseq object. This is therefore not computed by default running the pipeline.
 
+```bash
 	conda activate metabaRpipe
 	Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
-	-p dada2/phyloseq.RDS -T 2 \
+	-p dada2/phyloseq.RDS \
 	-o dada2/phyloseq_phylo \
 	-f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+```
 
-## Add/replace taxonomical information fron a phyloseq object:
-### using dada2::assignTaxonomy dada2::assignSpecies:
+N.B.: The phyloseq object should include the ASV sequences stored as `refseq()` :
 
-#### using Rscript from the terminal 
+```r
+> readRDS("dada2/phyloseq.RDS")phyloseq-class experiment-level objectotu_table()   OTU Table:          [ 322 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 322 reference sequences ]taxa are rows
+```
 
-The `run_phyloseq_dada2_tax.Rscript` Rscript allow to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. Below the options we can specify to the script:
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### 2. Adding/replacing taxonomical table from a phyloseq object:
+
+* The `run_phyloseq_dada2_tax.Rscript` Rscript allow to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. 
+
+The `dada2 formated` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html).
+
+Below the options we can specify to the script:
 
 
 ```
@@ -533,7 +548,16 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_dada2_tax.Rscript \
 -T 4 \
 -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ```
-#### within R
+We could also run the function directly within R/ Rstudio:
+
+Below the orignial `tax_table()`
+
+```r
+require(tidyverse); require(phyloseq)
+
+> readRDS("dada2/phyloseq.RDS") %>% tax_table() %>%  head()Taxonomy Table:     [ 6 taxa by 7 taxonomic ranks ]:       Kingdom  Phylum         Class    Order   Family   Genus   Species        <chr>    <chr>          <chr>    <chr>   <chr>    <chr>   <chr>   ASV001 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Ralsto… ""      ASV002 Bacteria Proteobacteria Alphapr… Rhizob… Rhizobi… Aureim… ""      ASV003 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Massil… ""      ASV004 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Parabu… "unknow…ASV005 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Massil… "sp0128…ASV006 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Massil… "" 
+```
+
 ```r
 source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
 
@@ -547,40 +571,58 @@ readRDS("dada2/phyloseq.RDS") %>%
                      return = TRUE,
                      full_return = FALSE) -> physeq_new_tax
 ```
-                     
-### using DECIPHER IDtaxa::
 
-You can also add or replace taxonomical information of your phyloseq object using DECIPHER IDtaxa function.
+The `eHOMD_RefSeq_dada2_V15.22` updated  `tax_table()`
+
+```r
+> physeq_new_tax %>% tax_table() %>%  head()Taxonomy Table:     [ 6 taxa by 7 taxonomic ranks ]:        Kingdom  Phylum         Class    Order    Family   Genus  Species        <chr>    <chr>          <chr>    <chr>    <chr>    <chr>  <chr>  ASV0001 Bacteria Actinobacteria Actinob… Bifidob… Bifidob… Bifid… unknownASV0002 Bacteria Proteobacteria Gammapr… Enterob… Enterob… Esche… unknownASV0003 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0004 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0005 Bacteria Bacteroidetes  Bactero… Bactero… Bactero… Bacte… unknownASV0006 Bacteria Firmicutes     Bacilli  Lactoba… Strepto… Strep… unknown
+```
+          
+* You can also perform taxonomic assignment of the ASV sequences using [DECIPHER IDtaxa function](https://github.com/benjjneb/dada2/issues/683). 
+
+
+
+The `DECIPHER formated` databases (*i.e.*, Training sets for organismal classification (nucleotides) can be downloaded [here](http://www2.decipher.codes/Downloads.html).
+
+As we have seen before, this can be performed from the terminal:
 
 ```bash
+conda activate metabaRpipe
+
 Rscript ${MY_DIR}/run_phyloseq_DECIPHER_tax.Rscript \
 --phyloseq_path dada2/phyloseq.RDS \
 --export dada2/04_dada2_taxonomy \
 --reverse_comp TRUE \
---db ~/db/DADA2/SILVA_SSU_r132_March2018.RData \
+--db ~/db/DADA2/SILVA_SSU_r132_March2018.RData \ # check where you downloaded your database
 --tax_threshold 60 \
 -T 4 \
 -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ```
-#### within R
+
+or from R/ Rstudio.
 
 ```r
+require(tidyverse); require(phyloseq)
+
 source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
 
 
 readRDS("dada2/physeq.RDS") %>%
   phyloseq_DECIPHER_tax(physeq = ., 
                         threshold = 60,
-                        db="~/db/DADA2/SILVA_SSU_r132_March2018.RData" 
-                        nthreads = 6,
+                        db="~/db/DADA2/SILVA_SSU_r132_March2018.RData"  # check where you downloaded your database
                         tryRC = TRUE,
                         return = TRUE) -> physeq_new_tax
 ```
+ <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Add/update metadata a phyloseq object:
+### 3. Adding/updating the metadata information from a phyloseq object:
 
+This can be done within R/Rstudio:
 
 ```r
+require(tidyverse); require(phyloseq)
+
 source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
 
 readRDS("dada2/phyloseq.RDS") %>%
@@ -591,94 +633,155 @@ readRDS("dada2/phyloseq.RDS") %>%
 ps_tax_phylo_meta
 ```
 
+ <p align="right">(<a href="#top">back to top</a>)</p>
 
-## TODO:
+#### 4. Perform post-clustering curation: <https://github.com/tobiasgf/lulu>
+
+Install the following tools/ packages:
+
+`R packages` - similarly as done before:
+
+```bash
+conda activate metabaRpipe
+R
+devtools::install_github("tobiasgf/lulu")
+devtools::install_github("mikemc/speedyseq")
+```
+`vsearch` in the dedicated conda environment:
+
+```bash
+conda activate metabaRpipe 
+conda install -c bioconda vsearch -y
+```
+
+```r
+source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
+
+readRDS("dada2/phyloseq.RDS") %>%  
+phyloseq_vsearch_lulu_cluster_ASV(vsearch ="/Users/test/miniconda3/envs/metabaRpipe4/bin/vsearch") -> phyloseq_lulu_clust
+	
+```
+
+322 ASV were present in the original phyloseq object:
+
+```r
+> readRDS("dada2/phyloseq.RDS") phyloseq-class experiment-level objectotu_table()   OTU Table:          [ 322 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 322 reference sequences ]taxa are rows
+```
+
+321 `vsearch-lulu` clustering :
+
+```r
+phyloseq_lulu_clust$physeq_curatedphyloseq-class experiment-level objectotu_table()   OTU Table:          [ 321 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 321 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 321 reference sequences ]taxa are rows
+```
+
+More information are stored under:
+
+```r
+phyloseq_lulu_clust$curated_result$otu_map
+```
+Check the [lulu repo](https://github.com/tobiasgf/lulu#tutorial) for more information.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+#### 5. picrust2 functional potential estimation:
+
+Install `picrust2` in the dedicated conda environment:
+
+```bash
+conda activate metabaRpipe
+conda install  -c bioconda -c conda-forge picrust2=2.3.0-b -y
+```
+
+Check the official [picrust2 repository](https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)) for more details regarding the parameters.
+
+```bash
+conda activate metabaRpipe
+
+Rscript /Users/test/Documents/GitHub/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript --help
+
+############################################################
+Starting 
+############################################################
+
+Loading required package: optparse
+Usage: /Users/test/Documents/GitHub/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript [options]
+
+
+Options:
+	-p CHARACTER, --phyloseq_path=CHARACTER
+		Path of the input phyloseq object
+
+	--picrust2_bin=CHARACTER
+		picrust2 script path
+
+	--working_dir=CHARACTER
+		Name of the working directory
+
+	--output=CHARACTER
+		Name of the output directory - should not exist before running the analysis
+
+	--traits=CHARACTER
+		Traits c(COG,EC,KO,PFAM,TIGRFAM)
+
+	--min_reads=CHARACTER
+		 
+
+	--min_samples=CHARACTER
+		 
+
+	-m CHARACTER, --hsp_method =CHARACTER
+		"   SP method to use."mp": predict discrete traits using
+  max parsimony. "emp_prob": predict discrete traits
+  based on empirical state probabilities across tips.
+  "subtree_average": predict continuous traits using
+  subtree averaging. "pic": predict continuous traits
+  with phylogentic independent contrast. "scp":
+    reconstruct continuous traits using squared-change
+  parsimony "
+
+	--no_gap_fill=CHARACTER
+		Disabel gap filling 
+
+	--add_description=CHARACTER
+		add description pf Pway
+
+	--load_picrust2_data=CHARACTER
+		import picrust2 data: could generate large files... 
+
+	--return=CHARACTER
+		return picrust2 data / write to a directory
+
+	-T NUMERIC, --slots=NUMERIC
+		Number of threads to perform the analyses
+
+	-f CHARACTER, --fun_dir=CHARACTER
+		Directory containing the R functions
+
+	-h, --help
+		Show this help message and exit
+
+```
+
+```bash
+Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript --phyloseq_path ~/dada2/phyloseq.RDS \
+--output ~/dada2/picrust2-out \
+--traits COG,EC,KO,PFAM \
+--add_description TRUE \
+-f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+```
+
+Check the official [picrust2 repository](https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)) for more details regarding the outputs.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+## To do:
 
 - add https://zenodo.org/account/settings/github/ -> DOI
 - <s>add phylogenetic tree to a phyloseq object</s>
-- <s>hange name</s>
+- <s>change name</s>
 - <s>add possibility to skip primer removal: skipping run_atropos() or changing atropos parameter?</s>
 - <s>replace taxonomic assignments of a phyloseq object using alternative approach/ database</s>
 - <s>cluster ASV using DECIPHER</s>
 - <s>cluster ASV using vsearch lulu</s>
 - <s>run picrust2 from a phyloseq object</s>
 
-## Help:
-
-
-activate the dedicated conda environment:
-
-	$ conda activate metabarcodingRpipeline
-
-print help:
-	
-	(metabaRpipe)$ Rscript scripts/dada2_metabarcoding_pipeline.R --help
-
-	Usage: scripts/dada2_metabarcoding_pipeline.R [options]
-
-
-	Options:
-	
-	-i CHARACTER, --input_directory=CHARACTER
-		Path of the input directory containing raw _R1_ and _R2_ raw reads in their respective run sub-directories 
-
-       e.g., -i raw [contains raw/run1 and raw/run2]
-
-       N.B.: sample name is extracted from .fastq.gz samples  before the first '_' e.g., XXX-XX 
-
-       sample names must be unambigious and unique e.g., sample-1 = sample-11, sample-01 != sample-10
-
-	-a CHARACTER, --atropos_binary=CHARACTER
-		Path of atropos program [used for primer removal]
-
-	-o CHARACTER, --output_directory=CHARACTER
-		Name of the output directory
-
-	-V CHARACTER, --pipeline=CHARACTER
-		V4 or V3V4 will use default primers and parameters as used in the FBT lab [primers, trunc, maxee, overlap, expected length, ...]
-
-	-t CHARACTER, --tax_method=CHARACTER
-		User can specify using dada2 (=dada) or DECIPHER for taxonomic assignments [default dada]
-
-	--tax_threshold=NUMERIC
-		Thershold for taxonomic assignments [if --tax_metod dada: he minimum bootstrap confidence for assigning a taxonomic level. if --tax_method DECIPHER: Numeric specifying the confidence at which to truncate the output taxonomic classifications. ]
-
-	--metadata=CHARACTER
-		Path to excel document containing metadata [Sample identifier column should be sample_name]
-
-	--database=CHARACTER
-		Path to the taxonomic database
-
-	--database_for_species_assignments=CHARACTER
-		Path to the speies-level taxonomic database [only for --tax_metod  dada]
-
-	--phylo=CHARACTER
-		Compute phylogenetic tree from the ASV sequence ?
-
-	--PRIMER_F=CHARACTER
-		Sequence of the gene specific Fwd primer to be removed with atropos [if using -V V4 or V3V4, this parameter is already set]
-
-	--PRIMER_R=CHARACTER
-		Sequence of the gene specific Rev primer to be removed with atropos [if using -V V4 or V3V4, this parameter is already set]
-
-	--minover=NUMERIC
-		Minimum overlap for merginf R1 and R2 reads [if using -V V4 or V3V4, this parameter is already set]
-
-	--trunclen=NUMERIC
-		Nucleotide position to truncate the Fwd and Rev reads at [if using -V V4 or V3V4, this parameter is already set]
-
-	--trim_length=NUMERIC
-		ASV of length outside the range will be discarded [i.e., insilco size exclusion of ASV - if using -V V3 or V3V4, this parameter is already set]
-
-	--maxee=NUMERIC
-		Maximum expected error for Fwd and Rev reads [if using -V V4 or V3V4, this parameter is already set]
-
-	--minLen=NUMERIC
-		Minimul read length [if using -V V3 or V3V4, this parameter is already set]
-
-	-T NUMERIC, --slots=NUMERIC
-		Number of threads to perform the analyses
-
-	-h, --help
-		Show this help message and exit
-
+ <p align="right">(<a href="#top">back to top</a>)</p>
