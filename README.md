@@ -1,6 +1,8 @@
 # metabaRpipe:
 
-This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). Cite authors who deserve credits for their valuable work!
+This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
+
+Cite authors who deserve credits for their valuable work!
 
 ## Installation:
 ### Configure a dedicated conda environment:
@@ -54,7 +56,7 @@ which should result in something like this, indicating you will use R installed 
 	quit(save = "no")
 ```
 
-6. Clone the `metabaRpipe` repository
+7. Clone the `metabaRpipe` repository
 
 This step is required to get the `Rscripts` locally.
 
@@ -99,7 +101,7 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
 ```		
 The ``> mylogs.txt 2>&1`` trick will redirect what is printed on the screen to a file including potential errors and also parameters that you used.
 
-If you encounter the following error:
+* If you encounter a `Permission denied` error:
 
 ```bash
 /metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript: Permission denied
@@ -111,7 +113,7 @@ Mark the file as executable using `chmod`.
 chmod +x ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript
 ```
 
-The other option is to work within` R` using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R` - examples will come later.
+The scripts can also be run within` R` using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R` - examples will come later.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Exploring the outputs:
@@ -187,7 +189,9 @@ sample_data() Sample Data:       [ 6 samples by 18 sample variables ]
 tax_table()   Taxonomy Table:    [ 322 taxa by 7 taxonomic ranks ]
 refseq()      DNAStringSet:      [ 322 reference sequences ]
 ```
-More informations regarding phyloseq object can be found [here](https://joey711.github.io/phyloseq/).
+This object contains the Amplicon Sequence Variants (ASV), their sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This allows easy handling of the data.
+
+More informations regarding `phyloseq` object can be found [here](https://joey711.github.io/phyloseq/).
 
 If `--save_out test_pipe_Rscript.RDS` is specified, all the outputs are also saved within this `R` object.
 
