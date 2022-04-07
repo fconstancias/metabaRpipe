@@ -65,13 +65,13 @@ This step is required to get the `Rscripts` locally.
 Change the directory where you would like to clone the repository.
 
 ```bash
-	MY_DIR=/path_to_mydir/whereIwant/metabaRpipe/to/be/installed/
-	cd ${MY_DIR}
+MY_DIR=/path_to_mydir/whereIwant/metabaRpipe/to/be/installed/
+cd ${MY_DIR}
 ```
 Use ``git clone`` to clone on your computer the repository including the functions and test data.
 
 ```bash
-	git clone https://github.com/fconstancias/metabaRpipe.git
+git clone https://github.com/fconstancias/metabaRpipe.git
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -473,11 +473,11 @@ For additional functionalities (*i.e.*, post ASV clustering using vsearch/lulu &
 Based on the approach described[ here](<https://f1000research.com/articles/5-1492>). It can be intensive depending on your setup and the overall richness of your phyloseq object. This is therefore not computed by default running the pipeline.
 
 ```bash
-	conda activate metabaRpipe
-	Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
-	-p dada2/phyloseq.RDS \
-	-o dada2/phyloseq_phylo \
-	-f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+conda activate metabaRpipe
+Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
+-p dada2/phyloseq.RDS \
+-o dada2/phyloseq_phylo \
+-f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ```
 
 N.B.: The phyloseq object should include the ASV sequences stored as `refseq()` :
