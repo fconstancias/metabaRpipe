@@ -43,19 +43,19 @@ which should result in something like this, indicating you will use R installed 
 6. Start `R` from the terminal an install the required `R packages`:
 
 ```R
-	R
+R
 	
-	install.packages("optparse", repos = "https://cloud.r-project.org")
-	devtools::install_github('tidyverse/tidyverse')
-	devtools::install_github("benjjneb/dada2")
-	devtools::install_github("KlausVigo/phangorn")
+install.packages("optparse", repos = "https://cloud.r-project.org")
+devtools::install_github('tidyverse/tidyverse')
+devtools::install_github("benjjneb/dada2")
+devtools::install_github("KlausVigo/phangorn")
 
-	install.packages("BiocManager", repos = "https://cloud.r-project.org")
-	BiocManager::install("ShortRead", update = FALSE)
-	BiocManager::install("DECIPHER", update = FALSE)
-	BiocManager::install("phyloseq", update = FALSE)
+install.packages("BiocManager", repos = "https://cloud.r-project.org")
+BiocManager::install("ShortRead", update = FALSE)
+BiocManager::install("DECIPHER", update = FALSE)
+BiocManager::install("phyloseq", update = FALSE)
 
-	quit(save = "no")
+quit(save = "no")
 ```
 
 7. Clone the `metabaRpipe` repository
