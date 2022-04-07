@@ -1,4 +1,4 @@
-# metabaRpipe 
+#metabaRpipe 
 [![DOI](https://zenodo.org/badge/447980964.svg)](https://zenodo.org/badge/latestdoi/447980964)
 
 
@@ -79,7 +79,7 @@ git clone https://github.com/fconstancias/metabaRpipe.git
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-# Running the pipeline:
+# Process your data with the `metabaRpipe` pipeline:
 
 Everything is now ready to analyse your raw data. We will from the terminal using `Rscripts`, enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one single command.
 
@@ -195,6 +195,43 @@ tax_table()   Taxonomy Table:    [ 322 taxa by 7 taxonomic ranks ]
 refseq()      DNAStringSet:      [ 322 reference sequences ]
 ```
 This object contains the `Amplicon Sequence Variants (ASV),` their sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This enable an easy handling of all those facet of the data. 
+
+Let's have a look. We first load and store the object in `R`.
+
+```R
+library(phyloseq)
+readRDS("dada2/phyloseq.RDS") -> ps
+```
+
+* `refseq()`
+
+```R
+ps %>% refseq()DNAStringSet object of length 322:      width seq                                                                        names                 [1]   429 TGGGGAATTTTGGACAATGGGCGAAAGCCTGATCCA...GACGCTCATGCACGAAAGCGTGGGGAGCAAACAGG ASV001  [2]   406 TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGA...GACACTGAGAGACGAAAGCTAGGGGAGCGAATGGG ASV002  [3]   429 TGGGGAATTTTGGACAATGGGCGCAAGCCTGATCCA...GACGCTCATGCACGAAAGCGTGGGGAGCAAACAGG ASV003  [4]   429 TGGGGAATTTTGGACAATGGGCGCAAGCCTGATCCA...GACGCTCATGCACGAAAGCGTGGGGAGCAAACAGG ASV004  [5]   429 TGGGGAATTTTGGACAATGGGCGCAAGCCTGATCCA...GACGCTCATGCACGAAAGCGTGGGGAGCAAACAGG ASV005  ...   ... ...[318]   409 TGGGGAATATTGCACAATGGGCGCAAGCCTGATGCA...GACGCTGAGAAGCGAAAGCATGGGGAGCGAACAGG ASV318[319]   405 TTGGGAATCTTGCACAATGGGGGAAACCCTGATGCA...GACGCTGAGGCGCGAAAGCGTGGGTAGCAAACAGG ASV319[320]   428 TAGGGAATCTTGCGCAATGGGCGAAAGCCTGACGCA...GACGCTGAGACGCGAAAGCGTGGGGAGCGAACAGG ASV320[321]   429 TAGGGAATCTTCCGCAATGGACGCAAGTCTGACGGA...GACGCTGAGGTGCGAAAGCGTGGGGATCAAACAGG ASV321[322]   423 TAGGGAATATTGGGCAATGGAGGAAACTCTGACCCA...GACGCTGAGGCACGAAAGTGTGGGGATCAAACAGG ASV322
+```
+
+* `tax_table()`
+
+```R
+ps %>%  tax_table()Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:       Kingdom  Phylum           Class               Order            Family             Genus     Species        <chr>    <chr>            <chr>               <chr>            <chr>              <chr>     <chr>   ASV001 Bacteria Proteobacteria   Gammaproteobacteria Burkholderiales  Burkholderiaceae   Ralstonia ""      ASV002 Bacteria Proteobacteria   Alphaproteobacteria Rhizobiales      Rhizobiaceae       Aureimon… ""      ASV003 Bacteria Proteobacteria   Gammaproteobacteria Burkholderiales  Burkholderiaceae   Massilia  ""      ASV004 Bacteria Proteobacteria   Gammaproteobacteria Burkholderiales  Burkholderiaceae   Paraburk… "unknow…ASV005 Bacteria Proteobacteria   Gammaproteobacteria Burkholderiales  Burkholderiaceae   Massilia  "sp0128…ASV006 Bacteria Proteobacteria   Gammaproteobacteria Burkholderiales  Burkholderiaceae   Massilia  ""      ASV007 Bacteria Actinobacteriota Actinomycetia       Mycobacteriales  Frankiaceae        Frankia   ""      ASV008 Bacteria Proteobacteria   Gammaproteobacteria Pseudomonadales  Pseudomonadaceae   Pseudomo… "unknow…ASV009 Bacteria Bacteroidota     Bacteroidia         Cytophagales     Hymenobacteraceae  Hymenoba… ""      ASV010 Bacteria Bacteroidota     Bacteroidia         Flavobacteriales Blattabacteriaceae Walczuch… ""      # … with 312 more taxa
+```
+
+* `otu_table()`
+
+```R
+ps %>%  otu_table()OTU Table:          [ 322 taxa and 6 samples ]:Taxa are rows       `R1F1-S66` `R1F2-S300` `R1F3-S90` `Y2A15-2M-06-S78` `Y2A15-2M-12-S77` `Y3-R1F4-S136`ASV001       2185        2214         54                 0                 0              0ASV002         10          42         21              2765                65              0ASV003          0           0       1253                 0               213              0ASV004        728         732          0                 0                 0              0ASV005          0           0        172                 0              1235              0ASV006          0           0       1144                 0               221              0ASV007          0          25         18               579                16              0ASV008          0           0        302                 0               198              0ASV009          0           0        358                 0                94              0ASV010          0           0          0               420                 0              0# … with 312 more taxa (rows)
+```
+
+* `sample_data()`
+
+```R
+ps %>% sample_data()Sample Data:        [ 6 samples by 18 sample variables ]:           input filtered denoisedF denoisedR merged tabled filtered_pc denoisedF_pc denoisedR_pc merged_pcR1F1-S66    5614     5370      4797      4793   4099   4099       0.957        0.893        0.893     0.854R1F2-S300   4678     4475      4233      4140   3671   3671       0.957        0.946        0.925     0.867R1F3-S90    8123     7754      7331      7420   6624   6624       0.955        0.945        0.957     0.904Y2A15-2M-…  7002     6593      6383      6440   6088   6088       0.942        0.968        0.977     0.954Y2A15-2M-…  6071     5853      5730      5753   5391   5391       0.964        0.979        0.983     0.941Y3-R1F4-S…    26       20        13         9      8      8       0.769        0.65         0.45      0.615# … with 8 more variables: filtered_merged_pc <dbl>, input_merged_pc <dbl>, tabled_joined <dbl>,#   chimera_out <dbl>, length_filtered <dbl>, tabled_pc <dbl>, chimera_out_pc <dbl>,#   length_filtered_pc <dbl>
+```
+
+* A phylogenetic tree  `phy_tree()` of the ASV sequences can also be included:
+
+```R
+readRDS("dada2/physeq_phylo/phyloseq_phylo.RDS") %>%  phy_tree()Phylogenetic tree with 322 tips and 321 internal nodes.Tip labels:  ASV001, ASV002, ASV003, ASV004, ASV005, ASV006, ...Rooted; includes branch lengths.
+```
 
 More informations regarding `phyloseq` object can be found [here](https://joey711.github.io/phyloseq/).
 
@@ -692,7 +729,38 @@ Check the [lulu repo](https://github.com/tobiasgf/lulu#tutorial) for more inform
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### 5. picrust2 functional potential estimation:
+#### 5. Cluster ASV using DECIPHER:
+
+
+Load the `phyloseq` object in R - 322 ASV:
+
+```r
+readRDS("dada2/phyloseq.RDS")  -> ps
+
+ps
+phyloseq-class experiment-level objectotu_table()   OTU Table:          [ 322 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 322 reference sequences ]taxa are rows
+```
+
+Run ASV clustering at 97% identity:
+
+```r
+ps %>% 
+phyloseq_DECIPHER_cluster_ASV(threshold = 97) -> out
+```
+
+The updated phyloseq object contains now 234 cluster of ASV:
+
+```r
+out$physeq_clusteredphyloseq-class experiment-level objectotu_table()   OTU Table:          [ 234 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 234 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 234 reference sequences ]taxa are rows
+```
+More information about the clusters are stored in the generated object:
+
+```r
+out$cluster_table %>%  arrange(-cluster_size)# A tibble: 322 × 18# Groups:   cluster_0.03 [234]   ASV    cluster_0.03 cluster_size `R1F1-S66` `R1F2-S300` `R1F3-S90` `Y2A15-2M-06-S78` `Y2A15-2M-12-S77`   <chr>         <int>        <int>      <int>       <int>      <int>             <int>             <int> 1 ASV005            4            8          0           0        172                 0              1235 2 ASV018            4            8          0           0          0                 0               251 3 ASV019            4            8          0           0        102                 0               117 4 ASV027            4            8          0           0          0                14               124 5 ASV062            4            8          0           0          0                15                23 6 ASV067            4            8          0           0         34                 0                 0 7 ASV070            4            8         30           0          0                 0                 0 8 ASV108            4            8          0           0         16                 0                 0 9 ASV011            8            7          0           0        238                 0                9910 ASV023            8            7          0           0         92                 0                90# … with 312 more rows, and 10 more variables: Y3-R1F4-S136 <int>, Kingdom <chr>, Phylum <chr>,#   Class <chr>, Order <chr>, Family <chr>, Genus <chr>, Species <chr>, ASV_length <int>,#   ASV_sequence <chr>
+```
+
+
+#### 6. picrust2 functional potential estimation:
 
 Install `picrust2` in the dedicated conda environment:
 
@@ -782,9 +850,99 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript --phyloseq_
 Check the official [picrust2 repository](https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)) for more details regarding the outputs.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+#### 7. Export [qiime2](https://qiime2.org/) compatible files:
+
+```bash
+conda activate metabaRpipe
+Rscript ${MY_DIR}/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript --help
+
+############################################################
+Starting 
+############################################################
+
+Loading required package: optparse
+Usage: metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript [options]
+
+
+Options:
+	-i CHARACTER, --input=CHARACTER
+		Path of the phyloseq object
+
+	-o CHARACTER, --output=CHARACTER
+		output directory
+
+	-f CHARACTER, --fun_dir=CHARACTER
+		Directory containing the R functions
+
+	-h, --help
+		Show this help message and exit
+
+
+```
+
+```bash
+Rscript metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript -i dada2/physeq_phylo/phyloseq_phylo.RDS \
+-o qiime2 \
+-f metabaRpipe/Rscripts/functions.R 
+```
+
+```bash
+ls qiime2/
+asv.fna			asv_biom.biom		asv_neweek.tre		qiime1_mapping_file.txt	qiime2_mapping_file.txt	tax.txt
+```
+
+Install qiime2 in a dedicated environment <https://docs.qiime2.org/2022.2/install/native/>
+
+```bash
+wget https://data.qiime2.org/distro/core/qiime2-2022.2-py38-osx-conda.yml
+conda env create -n qiime2-2022.2 --file qiime2-2022.2-py38-osx-conda.yml
+# OPTIONAL CLEANUP
+rm qiime2-2022.2-py38-osx-conda.yml
+# Activate the conda environment
+conda activate qiime2-2022.2
+# Test your installation
+qiime --help
+```
+
+Import the data in `qiime2`:
+
+```bash
+conda activate qiime2-2022.2
+
+
+qiime tools import   \
+--input-path asv_biom.biom \
+--type 'FeatureTable[Frequency]' \
+--input-format BIOMV100Format \
+--output-path qiime2_otu.qza
+
+qiime tools import \
+--type 'FeatureData[Taxonomy]' \
+--input-format HeaderlessTSVTaxonomyFormat \
+--input-path tax.txt \
+--output-path qiime2_taxonomy.qza
+   
+qiime tools import \
+--input-path asv_neweek.tre \
+--output-path asv_neweek.qza \
+--type 'Phylogeny[Rooted]'
+   
+qiime tools import \
+--input-path asv.fna \
+--output-path asv_rep_set.qza \
+--type 'FeatureData[Sequence]'
+   
+qiime metadata tabulate \
+--m-input-file qiime2_mapping_file.txt \
+--o-visualization qiime2_metadata.qzv
+
+```
+
+ <p align="right">(<a href="#top">back to top</a>)</p>
 ## To do:
 
-- add https://zenodo.org/account/settings/github/ -> DOI
+- <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
 - <s>change name</s>
 - <s>add possibility to skip primer removal: skipping run_atropos() or changing atropos parameter?</s>
