@@ -507,7 +507,7 @@ Options:
 
 ## Additional functionalities:
 
-For additional functionalities (*i.e.*, post ASV clustering using vsearch/lulu & picrust2 functional potential estimation - please install the following tools:
+
 
 ### 1.  Computing an ASV-phylogenetic tree in a phyloseq object:
 
@@ -581,7 +581,7 @@ Options:
 		Show this help message and exit
 ```
 
-To illustrate this we can update the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/).
+To illustrate this we can update the taxonomic classification of the ASV from the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/).
 
 ```bash
 conda activate metabaRpipe
@@ -682,7 +682,7 @@ ps_tax_phylo_meta
 
  <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### 4. Perform post-clustering curation: <https://github.com/tobiasgf/lulu>
+#### 4. Post-clustering curation using [lulu](<https://github.com/tobiasgf/lulu>): 
 
 Install the following tools/ packages:
 
@@ -941,6 +941,7 @@ qiime metadata tabulate \
 ```
 
  <p align="right">(<a href="#top">back to top</a>)</p>
+ 
 ## To do:
 
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
