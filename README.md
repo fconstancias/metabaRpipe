@@ -1,81 +1,104 @@
 # metabaRpipe:
 
+## Installation:
+### Configure a dedicated conda environment:
 
-## Configure a dedicated conda environment:
 
-
-### Install conda
+#### Install conda
 <https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html>
-### Create a dedicated conda environment:
-	$ conda create -n metabaRpipe -y
-### Activate conda environment:
-	$ conda activate metabaRpipe
-### install R and atropos:
-	(metabaRpipe)$ conda install -c bioconda atropos -y
-	(metabaRpipe)$ conda install -c conda-forge r-base -y
-	(metabaRpipe)$ conda install -c conda-forge r-devtools -y
-	(metabaRpipe)$ conda install -c conda-forge r-optparse -y
-	
-### start R from the terminal an install R packages:
-	(metabaRpipe)$ R
-	
-	devtools::install_github('tidyverse/tidyverse')
-	devtools::install_github("KlausVigo/phangorn")
-	devtools::install_github("benjjneb/dada2")
+#### Create a dedicated conda environment:
+	conda create -n metabaRpipe -y
+#### Activate conda environment:
+	conda activate metabaRpipe
+#### install R and atropos:
+	conda install -c conda-forge r-base=4.1 -y	conda install -c bioconda atropos=1.1.25 -y
+	conda install -c conda-forge r-devtools -y
 
-	if (!requireNamespace("BiocManager", quietly = TRUE))
-	install.packages("BiocManager")
-	BiocManager::install("ShortRead");BiocManager::install("DECIPHER");BiocManager::install("phyloseq")
+#### confirm R was correctly installed within the conda environment:
+
+ 	which R
+	
+which should result in:
+
+	/Users/xxx/miniconda3/envs/**metabaRpipe/bin**/R
+	
+#### start R from the terminal an install R packages:
+	R
+	
+	install.packages("optparse", repos = "https://cloud.r-project.org")
+	devtools::install_github('tidyverse/tidyverse')
+	devtools::install_github("benjjneb/dada2")
+	devtools::install_github("KlausVigo/phangorn")
+
+	install.packages("BiocManager", repos = "https://cloud.r-project.org")
+	BiocManager::install("ShortRead", update = FALSE)
+	BiocManager::install("DECIPHER", update = FALSE)
+	BiocManager::install("phyloseq", update = FALSE)
 
 	quit(save = "no")
 	
-## Clone the repository:
+### Clone the repository:
 
 This step is required to get the Rscripts locally.
 
 Change the directory where you would like to clone the repository.
 
-	$ MY_DIR=/path_to_mydir/whereIwant/metabaRpipe/to/be/installed/
-	$ cd ${MY_DIR}
+	MY_DIR=/path_to_mydir/whereIwant/metabaRpipe/to/be/installed/
+	cd ${MY_DIR}
 
 Use ``git clone`` to clone on your computer the repository including the functions and test data.
 
-	$ git clone https://github.com/fconstancias/metabaRpipe.git
+	git clone https://github.com/fconstancias/metabaRpipe.git
 
-## Running the pipeline from the terminal:
+# Running the pipeline:
 
 Everything is now ready to analyse your raw data.
-There are several options: working within R or the terminal using Rscripts enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one command.
+There are mainly to way to proceed: 
+
+* working from the terminal using Rscripts, enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one single command.
 
 
 First, activate the dedicated conda environment:
 
-	$ conda activate metabaRpipe
+	conda activate metabaRpipe
 
 
-Then, use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
+Use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
 
 For instance, using the `test-data` available on the repository:
 
 ```bash
-(metabaRpipe)$ Rscript ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
--i metabaRpipe/test-data/ \
---preset V3V4 \
---db ~/db/DADA2/silva_nr99_v138_train_set.fa.gz \
---db_species ~/db/DADA2/silva_species_assignment_v138.fa.gz \
---metadata metabaRpipe/metadata.xlsx \
---save_out test_pipe_Rscript.RDS \
--f ${MY_DIR}metabaRpipe/Rscripts/functions.R > mylogs.txt 2>&1
+Rscript ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript 
+-i ${MY_DIR}metabaRpipe/test-data/ /
+--preset V3V4 /
+--db ${MY_DIR}databases/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz /
+--db_species ${MY_DIR}databases/GTDB_bac120_arc122_ssu_r202_Species.fa.gz /
+--metadata ${MY_DIR}metabaRpipe/metadata.xlsx /
+--save_out test_pipe_Rscript.RDS /
+-f ${MY_DIR}metabaRpipe/Rscripts/functions.R  > mylogs.txt 2>&1
 ```		
 The ``> mylogs.txt 2>&1`` trick will redirect what is printed on the screen to a file including potential errors and also parameters that you used.
 
+If you encounter the following error
+
+```
+/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript: Permission denied
+
+```
+
+Mark the file as executable using `chmod`
+
+```
+chmod +x ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript
+```
+
+* The other option is to work within R using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R`.
 
 ## Exploring the outputs:
 
-By default the script generate the outputs under a ```dada2``` directory. Below the subfolders and outputs generated by the command:
+By default the script generates several outputs under a ```dada2``` directory. Below the subfolders and outputs generated by the script:
 
 ```bash
-(metabaRpipe)$tree  dada2/
 dada2/
 ├── 00_atropos_primer_removed
 │   ├── 180914_M00842_0310_000000000-C3GBT
@@ -161,8 +184,7 @@ Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific d
 
 
 ```bash
-(metabaRpipe)$ tree metabaRpipe/test-data/
-metabaRpipe/test-data/
+test-data/
 ├── 180914_M00842_0310_000000000-C3GBT
 │   ├── R1F1-S66_L001_R1_001.fastq.gz
 │   ├── R1F1-S66_L001_R2_001.fastq.gz
@@ -186,10 +208,10 @@ By default, sample names are retrieved from files names after the first ```_```,
 ## Definying your own presets:
 
 
-The ```--preset``` option is the most important parameter here since it will be used to remove primers used for PCR amplification - as recommended by dada2 author and also adjust the length filtering and trimming parameters. For instance, ```V3V4``` is related to the following primers, dada2 options.
+The ```--preset``` option is the most important parameter here since it will be used to remove primers used for PCR amplification - as recommended by dada2 authors -  and also adjust the length filtering and trimming parameters. For instance, ```V3V4``` is related to the following primers, dada2 options. Depending on the librayry preparation protocol you could also skip the PCR primer removal step using `rm_primers FALSE`
 
 ```
-(metabaRpipe)$ open ${MY_DIR}metabaRpipe/Rscripts/functions.R 
+open ${MY_DIR}metabaRpipe/Rscripts/functions.R 
 ...
   if(V == "V3V4"){
     
@@ -204,7 +226,7 @@ The ```--preset``` option is the most important parameter here since it will be 
 ...
 ```
 
-The sequences ```CCTAYGGGRBGCASCAG``` and ```GGACTACNNGGGTATCTAAT``` will be searched by ```atropos``` as a Fwd and Rev primers, respectively and removed. Only reads containing the expected primers will be kept.
+The sequences ```CCTAYGGGRBGCASCAG``` and ```GGACTACNNGGGTATCTAAT``` will be searched by ```atropos``` as a Fwd and Rev primers, respectively and removed. **Only** reads containing the expected primers will be kept.
 
 Fwd and Rev reads will by truncated after ```260``` and ```250``` nucleotide positions, reads shorter then `160` nucleotides will be removed as well as the Fwd with a maximum expected error more then `4` and Rev of `5`. `10` nucleotides will be used to merged denoised Fwd and Rev reads and only ASV `>240 length <600` will be kept.
 
@@ -216,7 +238,7 @@ You can modify the `${MY_DIR}metabaRpipe/Rscripts/functions.R` script by adding 
 
 All the options can be access using `--help`.
 
-```(metabaRpipe)$ Rscript ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript --help
+```(${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript --help
 
 Options:
 	-i CHARACTER, --input_directory=CHARACTER
@@ -338,17 +360,17 @@ Options:
 
 ## ETH FBT users:
 
-Please use the following commands to process the data targeting 16S V4 region using the PCR primers and parameters we use in the FBT group from the C18 bioinformatic workstation. Everything is installed and configure, you can follow the steps below to analyse your data.
+You can use the following commands to process the data targeting 16S V4 region using the PCR primers and parameters we use in the FBT group from the C18 bioinformatic workstation. Everything is installed and configured, you can follow the steps below to analyse your data.
 
 * First please book the  C18 bioinformatic workstation using the [calendar](https://hest.sp.ethz.ch/bt-calendars/_layouts/15/start.aspx#/Lists/D42%20PharmaBiome%20office).
 
 * Check the information to access the C18 bioinformatic workstation from the `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf` on `slide 16`.  
 
-* Then, create a directory were you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal if you already have experience.
+* Create a directory were you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal..
 
-* The next step is to organise the raw sequencing files in Miseq-run-specific sub-directories of a raw directory as explained in the **Raw data structure** section above. It should look like `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
+* Organise the raw sequencing files in **Miseq-run-specific** **sub-directories** of a raw directory as explained in the **Raw data structure** section above. It should look like `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
 
-* Open the terminal from the dock.
+* Open the terminal from the MAC dock.
 
 * Using the terminal, navigate to the directory you have created `cd` *i.e.*, change directory command.
 
@@ -386,12 +408,13 @@ Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phyloge
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript -i dada2/phyloseq_phylo/phyloseq_phylo.RDS -o dada2/qiime2 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
 ```
 
-You now have everything ready for analysis using R your preferred platform!
+You now have everything ready for analysis using your preferred platform!
 
 
 
 
-### for additional functionalities (i.e., post ASV clustering using vsearch/lulu & picrust2 functional potential estimation - please install the following tools:
+### Additional functionalities:
+for additional functionalities (i.e., post ASV clustering using vsearch/lulu & picrust2 functional potential estimation - please install the following tools:
 ### R packages - similarly as done before:
 
 	devtools::install_github("tobiasgf/lulu");devtools::install_github("ycphs/openxlsx");devtools::install_github("mikemc/speedyseq")

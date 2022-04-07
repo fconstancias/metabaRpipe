@@ -145,14 +145,14 @@ check_primers <- function(path_dir,
 #'
 #'
 #'
-#'
+#' run_atropos()
 #'
 
 run_atropos <- function(raw_files_path,
-                        atropos,
+                        atropos = "atropos",
                         cut_dir = "dada2/00_atropos_primer_removed",
-                        PRIMER_F,
-                        PRIMER_R,
+                        PRIMER_F = "CCTAYGGGRBGCASCAG",
+                        PRIMER_R = "GGACTACNNGGGTATCTAAT",
                         NSLOTS = 6,
                         raw_file_pattern = c("*_R1_*.gz","*_R2_*.gz"),
                         cut_file_pattern = c("_primersout_R1_.fastq.gz","_primersout_R2_.fastq.gz"),
