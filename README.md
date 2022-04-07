@@ -14,30 +14,32 @@ Cite authors who deserve credits for their valuable work!
 
 
 ```bash
-	conda create -n metabaRpipe -y
+conda create -n metabaRpipe -y
 ```
 
 3. Activate the conda environment:
 
 ```bash
-	conda activate metabaRpipe
+conda activate metabaRpipe
 ```
 4. Install `R` and `atropos` and `devtools` R package:
 
 ```bash
-	conda install -c conda-forge r-base=4.1 -y
-	conda install -c bioconda atropos=1.1.25 -y
-	conda install -c conda-forge r-devtools -y
+conda install -c conda-forge r-base=4.1 -y
+conda install -c bioconda atropos=1.1.25 -y
+conda install -c conda-forge r-devtools -y
 ```
 5. Confirm R was correctly installed within the conda environment:
 
 ```bash
- 	which R
+which R
 ```	
 which should result in something like this, indicating you will use R installed within your conda environment.
 
-	/Users/xxx/miniconda3/envs/metabaRpipe/bin/R
-	
+```bash
+/Users/xxx/miniconda3/envs/metabaRpipe/bin/R
+```
+
 6. Start `R` from the terminal an install the required `R packages`:
 
 ```R
@@ -82,7 +84,7 @@ Everything is now ready to analyse your raw data. We will from the terminal usin
 * First, activate the dedicated conda environment:
 
 ```bash
-	conda activate metabaRpipe
+conda activate metabaRpipe
 ```
 
 * Use ``Rscript`` to run the pipeline and specify some parameters e.g.: *databases* 
