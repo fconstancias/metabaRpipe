@@ -11,6 +11,30 @@ You can cite this package *in addition* to the developpers of `dada2` and the ot
 [Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
 
 
+## Table of Content:
+
+
+  * [Installation:](#installation-)
+    + [Configure a dedicated conda environment:](#configure-a-dedicated-conda-environment-)
+- [Process your data with the `metabaRpipe` pipeline:](#process-your-data-with-the--metabarpipe--pipeline-)
+  * [Exploring the outputs:](#exploring-the-outputs-)
+  * [Raw data organisation:](#raw-data-organisation-)
+  * [Define your own presets:](#define-your-own-presets-)
+  * [ETH FBT users:](#eth-fbt-users-)
+  * [Getting some help:](#getting-some-help-)
+  * [Additional functionalities:](#additional-functionalities-)
+    + [1.  Compute an ASV-phylogenetic tree in a phyloseq object:](#1--compute-an-asv-phylogenetic-tree-in-a-phyloseq-object-)
+    + [2. Adding/replacing taxonomical table in a phyloseq object:](#2-adding-replacing-taxonomical-table-in-a-phyloseq-object-)
+    + [3. Adding/updating the metadata information in a phyloseq object:](#3-adding-updating-the-metadata-information-in-a-phyloseq-object-)
+      - [4. Post-clustering curation using [lulu](<https://github.com/tobiasgf/lulu>):](#4-post-clustering-curation-using--lulu---https---githubcom-tobiasgf-lulu---)
+      - [5. Cluster ASV using DECIPHER:](#5-cluster-asv-using-decipher-)
+      - [6. picrust2 functional potential estimation:](#6-picrust2-functional-potential-estimation-)
+      - [7. Export [qiime2](https://qiime2.org/) compatible files:](#7-export--qiime2--https---qiime2org---compatible-files-)
+* [To do:](#to-do-)
+
+
+
+
 ## Installation:
 ### Configure a dedicated conda environment:
 
