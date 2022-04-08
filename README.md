@@ -592,10 +592,6 @@ Below the options we can specify to the script:
 ```
 Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_dada2_tax.Rscript --help
 
-############################################################
-Starting 
-############################################################
-
 Loading required package: optparse
 Usage: /Users/test//metabaRpipe/Rscripts/run_phyloseq_dada2_tax.Rscript [options]
 
@@ -838,9 +834,6 @@ conda activate metabaRpipe
 
 Rscript /Users/test/Documents/GitHub/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript --help
 
-############################################################
-Starting 
-############################################################
 
 Loading required package: optparse
 Usage: /Users/test/Documents/GitHub/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript [options]
@@ -919,9 +912,6 @@ Check the official [picrust2 repository](https://github.com/picrust/picrust2/wik
 conda activate metabaRpipe
 Rscript ${MY_DIR}/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript --help
 
-############################################################
-Starting 
-############################################################
 
 Loading required package: optparse
 Usage: metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript [options]
