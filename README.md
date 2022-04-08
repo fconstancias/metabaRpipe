@@ -967,6 +967,15 @@ Import the data in `qiime2`:
 ```bash
 conda activate qiime2-2022.2
 
+# Navigate were the output of phyloseq_export_qiime.Rscript were generated:
+
+cd qiime2/ 
+
+# List/ check the files are here:
+ls
+asv.fna			asv_biom.biom		asv_neweek.tre		qiime1_mapping_file.txt	qiime2_mapping_file.txt	tax.txt
+
+# Import OTU/ASV table:
 
 qiime tools import   \
 --input-path asv_biom.biom \
@@ -974,22 +983,30 @@ qiime tools import   \
 --input-format BIOMV100Format \
 --output-path qiime2_otu.qza
 
+# Import taxonomic table:
+
 qiime tools import \
 --type 'FeatureData[Taxonomy]' \
 --input-format HeaderlessTSVTaxonomyFormat \
 --input-path tax.txt \
 --output-path qiime2_taxonomy.qza
-   
+
+# Import phylogenetic tree:
+
 qiime tools import \
 --input-path asv_neweek.tre \
 --output-path asv_neweek.qza \
 --type 'Phylogeny[Rooted]'
-   
+
+# Import ASV sequences:
+
 qiime tools import \
 --input-path asv.fna \
 --output-path asv_rep_set.qza \
 --type 'FeatureData[Sequence]'
-   
+
+# Import metadata:
+
 qiime metadata tabulate \
 --m-input-file qiime2_mapping_file.txt \
 --o-visualization qiime2_metadata.qzv
