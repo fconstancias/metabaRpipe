@@ -4,9 +4,9 @@
 
 
 
-This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
+This pipeline is mainly based on `dada2` and the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
-You can cite this package *in addition* to the developpers of `dada2` and the other packages we used here.
+You can cite this package *in addition* to the developers of `dada2` and the other packages you used in the pipeline/functions.
 
 [Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
 
@@ -70,7 +70,7 @@ which should result in something like this, indicating you will use R installed 
 /Users/xxx/miniconda3/envs/metabaRpipe/bin/R
 ```
 
-6. Start `R` from the terminal an install the required `R packages`:
+6. Start `R` from the terminal and install the required `R packages`:
 
 ```R
 R
@@ -398,7 +398,7 @@ You now have everything ready for analysis using your preferred platform !
 ## Getting some help:
 
 
-* Options from a specific Rscript can be access using `--help` argument.
+* Options from a specific `Rscript` can be access using `--help` argument.
 
 
 ```bash
@@ -526,6 +526,12 @@ Options:
 		Show this help message and exit
 
 ```
+
+* Write a clear [issue](https://github.com/fconstancias/metabaRpipe/issues/new) 
+
+* [Contact](mailto:florentinconstancias@gmail.com) me 
+
+
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -668,7 +674,7 @@ More [details](https://benjjneb.github.io/dada2/assign.html)
 
 
 
-The `DECIPHER` formated databases (*i.e.*, Training sets for organismal classification (nucleotides) can be downloaded [here](http://www2.decipher.codes/Downloads.html).
+The `DECIPHER` formatted databases (*i.e.*, Training sets for organismal classification (nucleotides) can be downloaded [here](http://www2.decipher.codes/Downloads.html).
 
 As we have seen before, this can be performed from the terminal:
 
@@ -765,7 +771,7 @@ phyloseq_vsearch_lulu_cluster_ASV(vsearch ="/Users/test/miniconda3/envs/metabaRp
 phyloseq_lulu_clust$physeq_curatedphyloseq-class experiment-level objectotu_table()   OTU Table:          [ 321 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 321 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 321 reference sequences ]taxa are rows
 ```
 
-More information are stored under:
+More information is stored under:
 
 ```r
 phyloseq_lulu_clust$curated_result$otu_map
