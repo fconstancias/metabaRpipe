@@ -6,7 +6,10 @@
 
 This pipeline is mainly based on `dada2` and the follwoing tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
-Cite authors who deserve credits for their valuable work!
+You can cite this package *in addition* to the developpers of `dada2` and the other packages we used here.
+
+[Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
+
 
 ## Installation:
 ### Configure a dedicated conda environment:
@@ -179,12 +182,12 @@ dada2/
 
 There are several outputs generated during the steps performed:
 
-* the primers removal: `00_atropos_primer_removed` 
-* the inspection of the quality profiles: `01_dada2_quality_profiles`
-* the quality filtering, error learning, ASV inference and Fwd and Rev reads merging: `02_dada2_filtered_denoised_merged`
-* the combinaiton of the data proceed from different runs and the removal of chimeras: `03_dada2_merged_runs_chimera_removed`
-* the taxonomy assignments: `04_dada2_taxonomy`
-* a `phyloseq` object including all the data.
+* Reads after PCR primer removal `00_atropos_primer_removed`  - removed by default.
+* Fwd and Rev reads quality profiles: `01_dada2_quality_profiles`
+* Reads quality filtering, error learning, ASV inference and Fwd and Rev reads merging: `02_dada2_filtered_denoised_merged`
+* Merging data from different sequencing runs and the removal of chimeras and ASV length filtering: `03_dada2_merged_runs_chimera_removed`
+* Taxonomy assignments: `04_dada2_taxonomy`
+* A `phyloseq` object combining all the data.
 
 ```R
 library(phyloseq)
@@ -195,7 +198,7 @@ sample_data() Sample Data:       [ 6 samples by 18 sample variables ]
 tax_table()   Taxonomy Table:    [ 322 taxa by 7 taxonomic ranks ]
 refseq()      DNAStringSet:      [ 322 reference sequences ]
 ```
-This object contains the `Amplicon Sequence Variants (ASV),` their sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This enable an easy handling of all those facet of the data. 
+This object contains the Amplicon Sequence Variants (ASV) sequences `refseq()`, the ASV/sample count table `otu_table()`, the taxonomic path of the ASV `tax_table()` and the metadata `sample_data()`. This enable an easy handling of all those facet of the metabarcoding dataset. 
 
 Let's have a look. We first load and store the object in `R`.
 
@@ -228,7 +231,7 @@ ps %>%  otu_table()OTU Table:          [ 322 taxa and 6 samples ]:Taxa are row
 ps %>% sample_data()Sample Data:        [ 6 samples by 18 sample variables ]:           input filtered denoisedF denoisedR merged tabled filtered_pc denoisedF_pc denoisedR_pc merged_pcR1F1-S66    5614     5370      4797      4793   4099   4099       0.957        0.893        0.893     0.854R1F2-S300   4678     4475      4233      4140   3671   3671       0.957        0.946        0.925     0.867R1F3-S90    8123     7754      7331      7420   6624   6624       0.955        0.945        0.957     0.904Y2A15-2M-…  7002     6593      6383      6440   6088   6088       0.942        0.968        0.977     0.954Y2A15-2M-…  6071     5853      5730      5753   5391   5391       0.964        0.979        0.983     0.941Y3-R1F4-S…    26       20        13         9      8      8       0.769        0.65         0.45      0.615# … with 8 more variables: filtered_merged_pc <dbl>, input_merged_pc <dbl>, tabled_joined <dbl>,#   chimera_out <dbl>, length_filtered <dbl>, tabled_pc <dbl>, chimera_out_pc <dbl>,#   length_filtered_pc <dbl>
 ```
 
-* A phylogenetic tree  `phy_tree()` of the ASV sequences can also be included:
+* A phylogenetic tree  `phy_tree()` of the ASV sequences can also be stored in the `phyloseq` object:
 
 ```R
 readRDS("dada2/physeq_phylo/phyloseq_phylo.RDS") %>%  phy_tree()Phylogenetic tree with 322 tips and 321 internal nodes.Tip labels:  ASV001, ASV002, ASV003, ASV004, ASV005, ASV006, ...Rooted; includes branch lengths.
@@ -246,14 +249,14 @@ ls(out)
 [4] "qplot"               "taxo" 
 ```
 
-For more details, please check the [dada2 original tutorial](https://benjjneb.github.io/dada2/tutorial.html).
+For more details,  check the [dada2 original tutorial](https://benjjneb.github.io/dada2/tutorial.html).
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Raw data organisation:
 
-Organisation of the raw sequencing data is crucial.
+Organisation of the raw sequencing data is crucial:
 
-Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific directory since error learning and ASV inference has to be perform on a run basis. If you are only analysing one sequencing run, simply add only one subdirectory.
+Fwd and Rev reads (*_R1_* and *_R2_*, respectively) are placed in run specific directory - error learning and ASV inference has to be perform on a run basis. If you are only analysing one sequencing run, simply add only one subdirectory.
 
 
 ```bash
@@ -302,12 +305,12 @@ open ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ...
 ```
 
-The sequences ```CCTAYGGGRBGCASCAG``` and ```GGACTACNNGGGTATCTAAT``` will be searched by ```atropos``` as a Fwd and Rev primers, respectively and removed. **Only** reads containing the expected primers will be kept.
+The sequences ```CCTAYGGGRBGCASCAG``` and ```GGACTACNNGGGTATCTAAT``` will be searched by ```atropos``` as Fwd and Rev primers, respectively and removed. **Only** reads containing the expected primers will be kept.
 
 
 Fwd and Rev reads will by truncated after ```260``` and ```250``` nucleotide positions, reads shorter then `160` nucleotides will be removed as well as the Fwd with a maximum expected error more then `4` and Rev of `5`. `10` nucleotides will be used to merged denoised Fwd and Rev reads and only ASV `>240 length <600` will be kept.
 
-For more details, please check the dada2 original [tutorial](https://benjjneb.github.io/dada2/tutorial.html).
+For more details,  check the dada2 original [tutorial](https://benjjneb.github.io/dada2/tutorial.html).
 
 You can modify the `${MY_DIR}/metabaRpipe/Rscripts/functions.R` script by adding any `preset` of your choice adding another if statement and using the same variable names. Then  `--preset mypreset` can be used to call the parameters you defined in `${MY_DIR}/metabaRpipe/Rscripts/functions.R` when running the script ```Rscript ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript ```. This allows automatisation of the process and the possibility to run the pipeline from your HPC cluster.
 
@@ -509,9 +512,9 @@ Options:
 
 
 
-### 1.  Computing an ASV-phylogenetic tree in a phyloseq object:
+### 1.  Compute an ASV-phylogenetic tree in a phyloseq object:
 
-Based on the approach described[ here](<https://f1000research.com/articles/5-1492>). It can be intensive depending on your setup and the overall richness of your phyloseq object. This is therefore not computed by default running the pipeline.
+Based on the approach described[ here](<https://f1000research.com/articles/5-1492>). This step can be intensive depending on your setup and the overall richness of your phyloseq object. This is therefore not computed by default running the pipeline.
 
 ```bash
 conda activate metabaRpipe
@@ -521,19 +524,27 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
 -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ```
 
-N.B.: The phyloseq object should include the ASV sequences stored as `refseq()` :
+*N.B.:* The phyloseq object should include the ASV sequences stored as `refseq()` :
 
 ```r
 > readRDS("dada2/phyloseq.RDS")phyloseq-class experiment-level objectotu_table()   OTU Table:          [ 322 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 322 reference sequences ]taxa are rows
 ```
 
+Running the script generated a new `phyloseq` object which now includes a phylogenetic tree:
+
+```R
+readRDS("dada2/physeq_phylo/phyloseq_phylo.RDS") %>%  phy_tree()Phylogenetic tree with 322 tips and 321 internal nodes.Tip labels:  ASV001, ASV002, ASV003, ASV004, ASV005, ASV006, ...Rooted; includes branch lengths.
+```
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### 2. Adding/replacing taxonomical table from a phyloseq object:
+### 2. Adding/replacing taxonomical table in a phyloseq object:
 
-* The `run_phyloseq_dada2_tax.Rscript` Rscript allow to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. 
+*N.B.:* The phyloseq object should include the ASV sequences stored as `refseq()`.
 
-The `dada2 formatted` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html).
+* The `run_phyloseq_dada2_tax.Rscript` Rscript allows to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. 
+
+The `dada2 formatted` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html). Some are also included in the `metabaRpipe` repository.
 
 Below the options we can specify to the script:
 
@@ -581,7 +592,7 @@ Options:
 		Show this help message and exit
 ```
 
-To illustrate this we can update the taxonomic classification of the ASV from the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/).
+To illustrate this we can update the taxonomic classification of the ASV from the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/) and stored in the *metabaRpipe* repository we cloned.
 
 ```bash
 conda activate metabaRpipe
@@ -624,12 +635,17 @@ The `eHOMD_RefSeq_dada2_V15.22` updated  `tax_table()`
 ```r
 > physeq_new_tax %>% tax_table() %>%  head()Taxonomy Table:     [ 6 taxa by 7 taxonomic ranks ]:        Kingdom  Phylum         Class    Order    Family   Genus  Species        <chr>    <chr>          <chr>    <chr>    <chr>    <chr>  <chr>  ASV0001 Bacteria Actinobacteria Actinob… Bifidob… Bifidob… Bifid… unknownASV0002 Bacteria Proteobacteria Gammapr… Enterob… Enterob… Esche… unknownASV0003 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0004 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0005 Bacteria Bacteroidetes  Bactero… Bactero… Bactero… Bacte… unknownASV0006 Bacteria Firmicutes     Bacilli  Lactoba… Strepto… Strep… unknown
 ```
-          
+
+`dada2`'s authors recommendations on the `minBoot`  * i.e.*, `threshold` parameter.
+
+> An important parameter to consider when running assignTaxonomy(...) is minBoot, which sets the minimum bootstrapping support required to return a taxonomic classification. The original paper recommended a threshold of 50 for sequences of 250nts or less (as these are) but a threshold of 80 generally. 
+More [details](https://benjjneb.github.io/dada2/assign.html) 
+
 * You can also perform taxonomic assignment of the ASV sequences using [DECIPHER IDtaxa function](https://github.com/benjjneb/dada2/issues/683). 
 
 
 
-The `DECIPHER formated` databases (*i.e.*, Training sets for organismal classification (nucleotides) can be downloaded [here](http://www2.decipher.codes/Downloads.html).
+The `DECIPHER` formated databases (*i.e.*, Training sets for organismal classification (nucleotides) can be downloaded [here](http://www2.decipher.codes/Downloads.html).
 
 As we have seen before, this can be performed from the terminal:
 
@@ -661,9 +677,14 @@ readRDS("dada2/physeq.RDS") %>%
                         tryRC = TRUE,
                         return = TRUE) -> physeq_new_tax
 ```
+
+`DECIPHER`'s authors recommendations on the `confidence level` * i.e.*, `threshold` parameter.
+> Select a minimum confidence threshold for classifications. We recommend using a confidence of 60% (very high) or 50% (high).
+More [details](http://www2.decipher.codes/ClassifyOrganismsInputs.html) 
+
  <p align="right">(<a href="#top">back to top</a>)</p>
 
-### 3. Adding/updating the metadata information from a phyloseq object:
+### 3. Adding/updating the metadata information in a phyloseq object:
 
 This can be done within R/Rstudio:
 
@@ -943,7 +964,8 @@ qiime metadata tabulate \
  <p align="right">(<a href="#top">back to top</a>)</p>
  
 ## To do:
-
+- conda environment
+- [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
 - <s>change name</s>
