@@ -6,7 +6,7 @@
 
 This pipeline is an `R`, `phyloseq` oriented pipeline to analyse metabardocing data using `dada2` and based on the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
-Cite this package **in addition** to the developers of `dada2` and the other packages i.e., `DECIPHER` you used in the pipeline depending on the parameters:
+Cite this package **in addition** to the developers of `dada2` and the other packages you used *i.e.*, `DECIPHER` in the pipeline depending on the parameters:
 
 [Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
 
@@ -739,7 +739,7 @@ ps_tax_phylo_meta
 
  <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### 4. Post-clustering curation using [lulu](<https://github.com/tobiasgf/lulu>): 
+#### 4. Post-clustering curation using `lulu`: 
 
 Install the following tools/ packages:
 
@@ -787,7 +787,7 @@ Check the [lulu repo](https://github.com/tobiasgf/lulu#tutorial) for more inform
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### 5. Cluster ASV using DECIPHER:
+#### 5. Cluster ASV using `DECIPHER`:
 
 
 Load the `phyloseq` object in R - 322 ASV:
@@ -818,7 +818,7 @@ out$cluster_table %>%  arrange(-cluster_size)# A tibble: 322 × 18# Groups:   
 ```
 
 
-#### 6. picrust2 functional potential estimation:
+#### 6. `picrust2` functional potential estimation:
 
 Install `picrust2` in the dedicated conda environment:
 
@@ -906,7 +906,7 @@ Check the official [picrust2 repository](https://github.com/picrust/picrust2/wik
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-#### 7. Export [qiime2](https://qiime2.org/) compatible files:
+#### 7. Export `qiime2` compatible files:
 
 ```bash
 conda activate metabaRpipe
@@ -944,7 +944,7 @@ ls qiime2/
 asv.fna			asv_biom.biom		asv_neweek.tre		qiime1_mapping_file.txt	qiime2_mapping_file.txt	tax.txt
 ```
 
-Install qiime2 in a dedicated environment <https://docs.qiime2.org/2022.2/install/native/>
+Install `qiime2` in a dedicated environment <https://docs.qiime2.org/2022.2/install/native/>
 
 ```bash
 wget https://data.qiime2.org/distro/core/qiime2-2022.2-py38-osx-conda.yml
@@ -1014,6 +1014,7 @@ qiime metadata tabulate \
 - conda environment
 - exemple running from HPLC slurm / ...
 - phyloseq_to_clusters (enterotype)
+- change env name on C18 workstation -> metabaRpipe
 - [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
