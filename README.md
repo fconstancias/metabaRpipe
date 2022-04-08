@@ -4,7 +4,7 @@
 
 
 
-This pipeline is mainly based on `dada2` and the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
+This pipeline is an `R`, `phyloseq` oriented pipeline to analyse metabardocing data using `dada2` and based on the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
 Cite this package **in addition** to the developers of `dada2` and the other packages i.e., `DECIPHER` you used in the pipeline depending on the parameters:
 
