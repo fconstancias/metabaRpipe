@@ -2,10 +2,6 @@
 
 rm(list = ls())
 
-cat("\n############################################################\n")
-cat("Starting \n")
-cat("############################################################\n\n")
-
 ## ------------------------------------------------------------------------
 
 require("optparse")
@@ -86,10 +82,6 @@ cat(paste0('\n# Clustering -similarity- threshold: ',opt$clust_threshold,'.\n'))
 cat(paste0('\n# Clustering method: ',opt$clust_method,'.\n'))
 
 cat(paste0('\n# Threads: ',opt$slots,'.\n'))
-
-cat("\n############################################################\n")
-cat("All done \n")
-cat("############################################################\n\n")
 
 print(Sys.time())
 

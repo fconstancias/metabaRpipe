@@ -2,10 +2,6 @@
 
 rm(list = ls())
 
-cat("\n############################################################\n")
-cat("Starting \n")
-cat("############################################################\n\n")
-
 ## ------------------------------------------------------------------------
 
 require("optparse")
@@ -103,12 +99,6 @@ cat(paste0('\n# Rev Primer sequence: ',opt$rev_primer,'.\n'))
 cat(paste0('\n# Number of threads: ',opt$threads,'.\n'))
 cat(paste0('\n# Number of threads: ',opt$threads,'.\n'))
 cat(paste0('\n# Raw file pattern: ',opt$raw_file_pattern,'.\n'))
-
-
-
-cat("\n############################################################\n")
-cat("All done \n")
-cat("############################################################\n\n")
 
 print(Sys.time())
 

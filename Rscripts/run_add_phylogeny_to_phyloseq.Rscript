@@ -2,10 +2,6 @@
 
 rm(list = ls())
 
-cat("\n############################################################\n")
-cat("Starting \n")
-cat("############################################################\n\n")
-
 ## ------------------------------------------------------------------------
 
 require("optparse")
@@ -60,11 +56,6 @@ add_phylogeny_to_phyloseq(phyloseq_path = opt$phyloseq_path,
 
 cat("\n\nHere some Info for the record keeping:\n\n")
 print(sessionInfo())
-
-
-cat("\n############################################################\n")
-cat("All done \n")
-cat("############################################################\n\n")
 
 print(Sys.time())
 

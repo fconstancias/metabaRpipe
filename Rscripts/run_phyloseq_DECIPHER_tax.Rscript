@@ -2,10 +2,6 @@
 
 rm(list = ls())
 
-cat("\n############################################################\n")
-cat("Starting \n")
-cat("############################################################\n\n")
-
 ## ------------------------------------------------------------------------
 
 require("optparse")
@@ -115,10 +111,6 @@ cat(paste0('\n# slots: ',opt$slots,'.\n'))
 cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
 cat(paste0('\n# Directory for R script: ',opt$fun_dir,'.\n'))
 cat(paste0('\n# Directory for R script: ',opt$fun_dir,'.\n'))
-
-cat("\n############################################################\n")
-cat("All done \n")
-cat("############################################################\n\n")
 
 print(Sys.time())
 
