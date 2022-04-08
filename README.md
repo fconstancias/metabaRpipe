@@ -18,7 +18,7 @@ Cite this package **in addition** to the developers of `dada2` and the other pac
   * [Process your data with the `metabaRpipe` pipeline:](https://github.com/fconstancias/metabaRpipe#process-your-data-with-the-metabarpipe-pipeline)
   * [Exploring the outputs:](https://github.com/fconstancias/metabaRpipe#exploring-the-outputs)
   * [Raw data organisation:](https://github.com/fconstancias/metabaRpipe#raw-data-organisation)
-  * [Define your own presets:](https://github.com/fconstancias/metabaRpipe#define-your-own-presets-)
+  * [Define your own presets:](https://github.com/fconstancias/metabaRpipe#define-your-own-presets)
   * [ETH FBT users:](https://github.com/fconstancias/metabaRpipe#eth-fbt-users)
   * [Getting some help:](https://github.com/fconstancias/metabaRpipe#getting-some-help)
   * [Additional functionalities:](https://github.com/fconstancias/metabaRpipe#additional-functionalities)
@@ -1018,6 +1018,7 @@ qiime metadata tabulate \
 ## To do:
 - conda environment
 - exemple running from HPLC slurm / ...
+- phyloseq_to_clusters (enterotype)
 - [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
