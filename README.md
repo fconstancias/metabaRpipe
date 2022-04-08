@@ -6,7 +6,7 @@
 
 This pipeline is mainly based on `dada2` and the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
-You can cite this package *in addition* to the developers of `dada2` and the other packages you used in the pipeline/functions.
+Cite this package **in addition** to the developers of `dada2` and the other packages i.e., `DECIPHER` you used in the pipeline depending on the parameters:
 
 [Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
 
@@ -136,13 +136,13 @@ The ``> mylogs.txt 2>&1`` trick will redirect what is printed on the screen to a
 * If you encounter a `Permission denied` error:
 
 ```bash
-/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript: Permission denied
+.../metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript: Permission denied
 
 ```
 Mark the file as executable using `chmod`.
 
 ```bash
-chmod +x ${MY_DIR}metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript
+chmod +x ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript
 ```
 
 The scripts can also be run within` R` using the R functions stored under `${MY_DIR}metabaRpipe/Rscripts/functions.R` - examples will come later.
@@ -559,7 +559,7 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
 > readRDS("dada2/phyloseq.RDS")phyloseq-class experiment-level objectotu_table()   OTU Table:          [ 322 taxa and 6 samples ]:sample_data() Sample Data:        [ 6 samples by 18 sample variables ]:tax_table()   Taxonomy Table:     [ 322 taxa by 7 taxonomic ranks ]:refseq()      DNAStringSet     :      [ 322 reference sequences ]taxa are rows
 ```
 
-Running the script generated a new `phyloseq` object which now includes a phylogenetic tree:
+Running the script above generated a new `phyloseq` object which now includes a phylogenetic tree:
 
 ```R
 readRDS("dada2/physeq_phylo/phyloseq_phylo.RDS") %>%  phy_tree()Phylogenetic tree with 322 tips and 321 internal nodes.Tip labels:  ASV001, ASV002, ASV003, ASV004, ASV005, ASV006, ...Rooted; includes branch lengths.
@@ -573,7 +573,13 @@ readRDS("dada2/physeq_phylo/phyloseq_phylo.RDS") %>%  phy_tree()Phylogenetic t
 
 * The `run_phyloseq_dada2_tax.Rscript` Rscript allows to update the taxonomy using `dada2::assignTaxonomy` and `dada2::assignSpecies` from the terminal. 
 
-The `dada2 formatted` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html). Some are also included in the `metabaRpipe` repository.
+The `dada2 formatted` databases can be downloaded [here](https://benjjneb.github.io/dada2/training.html). Some are also included in the `metabaRpipe` repository:
+
+```bash
+ls ${MY_DIR}/metabaRpipe/databases/
+GTDB_bac120_arc122_ssu_r202_Genus.fa.gz			eHOMD_RefSeq_dada2_V15.22.fasta.gz
+GTDB_bac120_arc122_ssu_r202_Species.fa.gz		eHOMD_RefSeq_dada2_assign_species_V15.22.fasta.gz
+```
 
 Below the options we can specify to the script:
 
@@ -621,7 +627,7 @@ Options:
 		Show this help message and exit
 ```
 
-To illustrate this we can update the taxonomic classification of the ASV from the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/) and stored in the *metabaRpipe* repository we cloned.
+To illustrate this, we can update the taxonomic classification of the ASV from the phyloseq object we generated using the [Human Oral Microbiome Database](https://www.homd.org/) and stored in the *metabaRpipe* repository we cloned.
 
 ```bash
 conda activate metabaRpipe
@@ -665,7 +671,7 @@ The `eHOMD_RefSeq_dada2_V15.22` updated  `tax_table()`
 > physeq_new_tax %>% tax_table() %>%  head()Taxonomy Table:     [ 6 taxa by 7 taxonomic ranks ]:        Kingdom  Phylum         Class    Order    Family   Genus  Species        <chr>    <chr>          <chr>    <chr>    <chr>    <chr>  <chr>  ASV0001 Bacteria Actinobacteria Actinob… Bifidob… Bifidob… Bifid… unknownASV0002 Bacteria Proteobacteria Gammapr… Enterob… Enterob… Esche… unknownASV0003 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0004 Bacteria Bacteroidetes  Bactero… Bactero… Prevote… Prevo… unknownASV0005 Bacteria Bacteroidetes  Bactero… Bactero… Bactero… Bacte… unknownASV0006 Bacteria Firmicutes     Bacilli  Lactoba… Strepto… Strep… unknown
 ```
 
-`dada2`'s authors recommendations on the `minBoot`  * i.e.*, `threshold` parameter.
+`dada2`'s authors recommendations on the `minBoot`  * i.e.*, `threshold` parameter:
 
 > An important parameter to consider when running assignTaxonomy(...) is minBoot, which sets the minimum bootstrapping support required to return a taxonomic classification. The original paper recommended a threshold of 50 for sequences of 250nts or less (as these are) but a threshold of 80 generally. 
 More [details](https://benjjneb.github.io/dada2/assign.html) 
@@ -994,6 +1000,7 @@ qiime metadata tabulate \
  
 ## To do:
 - conda environment
+- exemple running from HPLC slurm / ...
 - [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
