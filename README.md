@@ -108,7 +108,7 @@ git clone https://github.com/fconstancias/metabaRpipe.git
 
 # Process your data with the `metabaRpipe` pipeline:
 
-Everything is now ready to analyse your raw data. We will from the terminal using `Rscripts`, enabling you to run the pipeline and generate a phyloseq object from raw sequencing data using one single command.
+Everything is now ready to analyse your raw data. We can use `Rscripts` from the terminal -or an HPLC cluster- enabling you to run the pipeline and generate a `phyloseq` object directly from the raw sequencing data and using one single command.
 
 
 * First, activate the dedicated conda environment:
@@ -349,7 +349,7 @@ You can use the following commands to process the data targeting 16S V4 region u
 
 * The information to access the C18 bioinformatic workstation can be found here: `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf` on `slide 16`.  
 
-* Create a directory were you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal..
+* Create a directory where you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal..
 
 * Organise the raw sequencing files in **Miseq-run-specific** **sub-directories**  as explained in the **Raw data structure** section above. It should look like `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
 
@@ -378,18 +378,23 @@ Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarco
 --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
+[Check the output](https://github.com/fconstancias/metabaRpipe#exploring-the-outputs).
+
 * Add a phylogenetic tree of the ASV directly to the R phyloseq object:
 
 ```bash
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phylogeny_to_phyloseq.Rscript -p dada2/phyloseq.RDS -o dada2/phyloseq_phylo -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R > add_phylo_logs.txt 2>&1
 
 ```
+More details [here](https://github.com/fconstancias/metabaRpipe#1--compute-an-asv-phylogenetic-tree-in-a-phyloseq-object).
 
 * Export qiime2 compatible files:
 
 ```bash
 Rscript /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript -i dada2/phyloseq_phylo/phyloseq_phylo.RDS -o dada2/qiime2 -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
 ```
+More details [here](https://github.com/fconstancias/metabaRpipe#7-export-qiime2-compatible-files).
+
 
 You now have everything ready for analysis using your preferred platform !
 
