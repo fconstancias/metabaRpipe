@@ -4,9 +4,9 @@
 
 
 
-This pipeline is an `R`, `phyloseq` oriented pipeline to analyse metabardocing data using `dada2` and based on the following tutorials [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
+This pipeline is an `R`, `phyloseq` oriented pipeline to analyse metabardocing data using `dada2` and based on the following tutorials: [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
-Cite this package **in addition** to the developers of `dada2` and the other packages you used *i.e.*, `DECIPHER` in the pipeline depending on the parameters:
+Cite this package **in addition** to the developers of `dada2` and the other packages you used in the pipeline *i.e.*, `DECIPHER`:
 
 [Florentin Constancias, & Frédéric Mahé. (2022). fconstancias/metabaRpipe: v0.9 (v0.9). Zenodo. https://doi.org/10.5281/zenodo.6423397](https://zenodo.org/record/6423397#.Yk_azd86-_J)
 
@@ -1007,9 +1007,112 @@ qiime metadata tabulate \
 --o-visualization qiime2_metadata.qzv
 
 ```
-
  <p align="right">(<a href="#top">back to top</a>)</p>
- 
+
+## `QIIME2`:
+
+QIIME™ (pronounced chime) stands for Quantitative Insights Into Microbial Ecology. It is a bioinformatic pipeline developed to ease the process of bioinformatic analysis of raw sequencing microbiome data. PCR primer removal and the main core of the pipeline are based on the same tools and we use similar parameters. `metabaRpipe` allows to perform the steps within `R` and offers the flexibility and power of all the available `R packages/` `functions`. In addition, `presets` allow to process your data in a single command. Below the `QIIME2` steps correspondong to the `metabaRpipe` ones. 
+
+### Installation:
+  
+You can install `QIIME2` on `MAC`, `windows` or `linux` systems using [conda](https://docs.qiime2.org/2022.2/install/native/) Alternatively, `QIIME2` cam be run using a [virtual machine](https://docs.qiime2.org/2022.2/install/virtual/).
+
+### Bioinformatic analyses using `dada2` within `QIIME2`:
+
+#### PCR primer removal:
+QIIME2 uses cutadapt - former version of atropos - in order to detect and remove PCR primers from raw metabarcoding sequencing data more details [here](cutadapt https://docs.qiime2.org/2022.2/plugins/available/cutadapt/trim-paired/).
+
+#### `dada2` quality trimming, error learning, ASV inference and error learning:
+
+QIIME2 relies on `dada2` `R` package to process PCR primers free sequencing into ASV / sample count table using the following [qiime2 plugin](https://docs.qiime2.org/2022.2/plugins/available/dada2/denoise-paired/) which actually calls a `dada2` `R` script
+
+```{bash}
+less /Users/test/miniconda3/envs/qiime2-2022.2/bin/run_dada_paired.R
+
+#!/usr/bin/env Rscript
+
+###################################################
+# This R script takes an input two directories of
+# .fastq.gz files, corresponding to matched forward
+# and reverse sequence files,
+# and outputs a tsv file of the dada2 processed sequence
+# table. It is intended for use with the QIIME2 plugin
+# for DADA2.
+#
+# Rscript run_dada_paired.R input_dirF input_dirR output.tsv track.tsv filtered_dirF filtered_dirR 240 160 0 0 2.0 2 pooled 1.0 0 100000
+####################################################
+
+####################################################
+#             DESCRIPTION OF ARGUMENTS             #
+####################################################
+# NOTE: All numeric arguments should be zero or positive.
+# NOTE: All numeric arguments save maxEEF/R are expected to be integers.
+# NOTE: Currently the filterered_dirF/R must already exist.
+# NOTE: ALL ARGUMENTS ARE POSITIONAL!
+#
+### FILE SYSTEM ARGUMENTS ###
+#
+# 1) File path to directory with the FORWARD .fastq.gz files to be processed.
+#    Ex: path/to/dir/with/FWD_fastqgzs
+#
+# 2) File path to directory with the REVERSE .fastq.gz files to be processed.
+#    Ex: path/to/dir/with/REV_fastqgzs
+...
+### LEARN ERROR RATES ###
+# Dereplicate enough samples to get nreads.learn total reads
+cat("2) Learning Error Rates\n")
+errF <- suppressWarnings(learnErrors(filtsF, nreads=nreads.learn, multithread=multithread))
+errR <- suppressWarnings(learnErrors(filtsR, nreads=nreads.learn, multithread=multithread))
+
+### PROCESS ALL SAMPLES ###
+# Loop over rest in streaming fashion with learned error rates
+denoisedF <- rep(0, length(filtsF))
+ddsF <- vector("list", length(filtsF))
+ddsR <- vector("list", length(filtsF))
+mergers <- vector("list", length(filtsF))
+cat("3) Denoise samples ")
+
+for(j in seq(length(filtsF))) {
+  drpF <- derepFastq(filtsF[[j]])
+  ddsF[[j]] <- dada(drpF, err=errF, multithread=multithread, verbose=FALSE)
+  drpR <- derepFastq(filtsR[[j]])
+  ddsR[[j]] <- dada(drpR, err=errR, multithread=multithread, verbose=FALSE)
+  cat(".")
+}
+cat("\n")
+if(poolMethod == "pseudo") {
+  cat("  Pseudo-pool step ")
+  ### TEMPORARY, to be removed once 1.12 makes its way to Q2
+  ### Needed for now to manage pseudo-pooling memory, as 1.10 didn't do this appropriately.
+  ### pseudo_priors code copied from dada2.R
+  stF <- makeSequenceTable(ddsF)
+  pseudo_priorsF <- colnames(stF)[colSums(stF>0) >= 2 | colSums(stF) >= Inf]
+  rm(stF)
+  stR <- makeSequenceTable(ddsR)
+  pseudo_priorsR <- colnames(stR)[colSums(stR>0) >= 2 | colSums(stR) >= Inf]
+  rm(stR)
+  ### \pseudo_priors code copied from dada2.R
+  ### code copied from previous loop through samples in this script
+  for(j in seq(length(filtsF))) {
+    drpF <- derepFastq(filtsF[[j]])
+    ddsF[[j]] <- dada(drpF, err=errF, priors=pseudo_priorsF,
+                      multithread=multithread, verbose=FALSE)
+    drpR <- derepFastq(filtsR[[j]])
+    ddsR[[j]] <- dada(drpR, err=errR, priors=pseudo_priorsR,
+                      multithread=multithread, verbose=FALSE)
+    cat(".")
+  }
+  cat("\n")
+...
+```
+#### Taxonomy assignment:
+
+[https://docs.qiime2.org/2022.2/plugins/available/feature-classifier/classify-consensus-vsearch/?highlight=classify](https://docs.qiime2.org/2022.2/plugins/available/feature-classifier/classify-consensus-vsearch/?highlight=classify)
+
+#### ASV phylogeny:
+
+[https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20](https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20)
+
 ## To do:
 - conda environment
 - exemple running from HPLC slurm / ...
