@@ -4,7 +4,7 @@
 
 
 
-This pipeline is an `R`, `phyloseq` oriented pipeline to analyse metabardocing data using `dada2` and based on the following tutorials: [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
+This pipeline is an `R`, `phyloseq` oriented pipeline to analyse raw metabardocing data using `dada2` and based on the following tutorials: [https://f1000research.com/articles/5-1492](https://f1000research.com/articles/5-1492), [https://benjjneb.github.io/dada2/tutorial.html](https://benjjneb.github.io/dada2/tutorial.html). 
 
 Cite this package **in addition** to the developers of `dada2` and the other packages you used in the pipeline *i.e.*, `DECIPHER`:
 
@@ -642,7 +642,7 @@ Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_dada2_tax.Rscript \
 -T 4 \
 -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
 ```
-We could also run the function directly within R/ Rstudio:
+We could also run the function directly from R/ Rstudio:
 
 Below the original `tax_table()`
 
@@ -934,7 +934,7 @@ Options:
 ```
 
 ```bash
-Rscript metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript -i dada2/physeq_phylo/phyloseq_phylo.RDS \
+Rscript  ${MY_DIR}/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript -i dada2/physeq_phylo/phyloseq_phylo.RDS \
 -o qiime2 \
 -f metabaRpipe/Rscripts/functions.R 
 ```
@@ -1011,7 +1011,7 @@ qiime metadata tabulate \
 
 ## `QIIME2`:
 
-QIIME™ (pronounced chime) stands for Quantitative Insights Into Microbial Ecology. It is a bioinformatic pipeline developed to ease the process of bioinformatic analysis of raw sequencing microbiome data. PCR primer removal and the main core of the pipeline are based on the same tools and we use similar parameters. `metabaRpipe` allows to perform the steps within `R` and offers the flexibility and power of all the available `R packages/` `functions`. In addition, `presets` allow to process your data in a single command. Below the `QIIME2` steps correspondong to the `metabaRpipe` ones. 
+`QIIME™` (pronounced chime) stands for Quantitative Insights Into Microbial Ecology. It is a bioinformatic pipeline developed to ease the process of bioinformatic analysis of raw sequencing microbiome data. PCR primer removal and the main core of the pipeline are based on the same tools and we use similar parameters. `metabaRpipe` allows to perform the steps within `R` and offers the flexibility and power of all the available `R packages/` `functions`. In addition, `presets` allow to process your data in a single command. Below the `QIIME2` steps correspondong to the `metabaRpipe` ones. 
 
 ### Installation:
   
@@ -1020,11 +1020,11 @@ You can install `QIIME2` on `MAC`, `windows` or `linux` systems using [conda](ht
 ### Bioinformatic analyses using `dada2` within `QIIME2`:
 
 #### PCR primer removal:
-QIIME2 uses cutadapt - former version of atropos - in order to detect and remove PCR primers from raw metabarcoding sequencing data more details [here](cutadapt https://docs.qiime2.org/2022.2/plugins/available/cutadapt/trim-paired/).
+`QIIME2` uses cutadapt - former version of atropos - in order to detect and remove PCR primers from raw metabarcoding sequencing data more details [here](cutadapt https://docs.qiime2.org/2022.2/plugins/available/cutadapt/trim-paired/).
 
 #### `dada2` quality trimming, error learning, ASV inference and error learning:
 
-QIIME2 relies on `dada2` `R` package to process PCR primers free sequencing into ASV / sample count table using the following [qiime2 plugin](https://docs.qiime2.org/2022.2/plugins/available/dada2/denoise-paired/) which actually calls a `dada2` `R` script
+`QIIME2` relies on `dada2` `R` package to process PCR primers free sequencing into ASV / sample count table using the following [qiime2 plugin](https://docs.qiime2.org/2022.2/plugins/available/dada2/denoise-paired/) which actually calls a `dada2` `R` script:
 
 ```{bash}
 less /Users/test/miniconda3/envs/qiime2-2022.2/bin/run_dada_paired.R
@@ -1114,6 +1114,7 @@ if(poolMethod == "pseudo") {
 [https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20](https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20)
 
 ## To do:
+- CIRAD users (cluster)
 - conda environment
 - exemple running from HPLC slurm / ...
 - phyloseq_to_clusters (enterotype)
