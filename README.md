@@ -364,7 +364,7 @@ cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
 * Activate the conda environment. 
 
 ```bash
-conda activate metabarcodingRpipeline
+conda activate metabaRpipe
 ```
 
 * Run the pipeline with the default V4 FBT parameters - press enter to start:

@@ -2697,7 +2697,7 @@ run_dada2_pipe <- function(raw_files_path,
     
     PRIMER_F = "GTGYCAGCMGCCGCGGTAA"
     PRIMER_R = "GGACTACNVGGGTWTCTAAT" 
-    trim_length = c(220,280)
+    trim_length = c(200,280)
     truncQ = 4
     trunclen =  c(170,140)
     maxee = c(4,5)
