@@ -2704,6 +2704,7 @@ run_dada2_pipe <- function(raw_files_path,
     minLen = 120
     minover = 25
     nbases = 100000000
+    collapseNoMis = TRUE
   } 
   if(V == "V4-Addition-PRO") {
     
