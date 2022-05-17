@@ -1460,22 +1460,22 @@ add_phylogeny_to_phyloseq <- function(phyloseq_path,
     # names(sequences) <- sequences  # this propagates to the tip labels of the tree
     names(sequences) <- taxa_names(physeq)  # this propagates to the tip labels of the tree
     
-    alignment <- AlignSeqs(Biostrings::DNAStringSet(sequences),
+    alignment <- DECIPHER::AlignSeqs(Biostrings::DNAStringSet(sequences),
                            anchor = NA,
                            processors = nthreads)
     
-    phang_align <- phyDat(as(alignment, 'matrix'), type='DNA')
+    phang_align <- phangorn::phyDat(as(alignment, 'matrix'), type='DNA')
     
-    dm <- dist.ml(phang_align)
+    dm <- phangorn::dist.ml(phang_align)
     
-    treeNJ <- NJ(dm)  # note, tip order != sequence order
+    treeNJ <- phangorn::NJ(dm)  # note, tip order != sequence order
     
-    fit = pml(treeNJ, data=phang_align)
+    fit = phangorn::pml(treeNJ, data=phang_align)
     
     ## negative edges length changed to 0!
     fitGTR <- update(fit, k = 4, inv = 0.2)
     
-    fitGTR <- optim.pml(fitGTR, model = 'GTR', optInv = TRUE, optGamma = TRUE,
+    fitGTR <- phangorn::optim.pml(fitGTR, model = 'GTR', optInv = TRUE, optGamma = TRUE,
                         rearrangement = 'stochastic',
                         control = pml.control(trace = 0))
     
