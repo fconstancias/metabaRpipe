@@ -2195,6 +2195,7 @@ phyloseq_vsearch_lulu_cluster_ASV <- function(physeq, # readRDS("data/processed/
                                               minimum_match = 84,
                                               minimum_relative_cooccurence = 0.95,
                                               minimum_ratio = 1, # only if minimum_ratio_type = "avg"
+                                              export = FALSE,
                                               return = TRUE,
                                               full_return = TRUE){
   
@@ -2315,7 +2316,7 @@ phyloseq_vsearch_lulu_cluster_ASV <- function(physeq, # readRDS("data/processed/
   
   ## ------------------------------------------------------------------------
   
-  if(dir != FALSE){
+  if(export != FALSE){
     
     # write_tsv(x = curated_result$curated_table,
     #           file = paste0(dir,"/","lulu_curated_table.tsv"))
@@ -2353,14 +2354,12 @@ phyloseq_vsearch_lulu_cluster_ASV <- function(physeq, # readRDS("data/processed/
 #' @param ..
 #' @author Florentin Constancias
 #' @note Generetate MIMOSA2 compatible file- <https://borenstein-lab.github.io/MIMOSA2shiny/results.html#>
-#' @note .
-#' @note .
+#' @note https://www.youtube.com/watch?v=xZ7yc-GKcSk
+#' @note https://ycl6.github.io/16S-Demo/4_picrust2_tutorial.html#Perform_statistical_analysis
+#' @note https://github.com/picrust/picrust2/wiki/Frequently-Asked-Questions#how-can-i-determine-kegg-pathway-abundances-from-the-predicted-ko-abundances
 #' @return .
 #' @export
 #' @examples
-#'
-#'
-#'
 #'
 #'
 #'phyloseq_picrust2(physeq = readRDS("/Users/fconstan/Documents/GitHub/amchick/data/processed/physeq_update_11_1_21.RDS"),
@@ -3064,4 +3063,82 @@ physeq_export_qiime <- function(physeq,
 
 
 
+#' @title ...
+#' @param .
+#' @param ..
+#' @author Florentin Constancias
+#' @note .
+#' @note .
+#' @note .
+#' @return .
+#' @export
+#' @examples
+#' 
+
+
+FM_2phyloseq <- function(input_table = NULL,
+                         taxa_ranks = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+                         rename_OTU = TRUE,
+                         otu_prefix = "swrm"){
+  # TODO:  spread_filter = Inf, quality_filter= 0, identify_filter = 0
+  
+  #----------------
+  
+  input_table %>% 
+    read_tsv() -> df
+  
+  #----------------
+  
+  df %>% 
+    select(-OTU:-cloud, -length:-references) %>% 
+    column_to_rownames("amplicon") %>% 
+    as.matrix() -> otu_table
+  
+  #----------------
+  
+  df %>% 
+    select(amplicon, taxonomy) %>% 
+    separate(taxonomy, sep = c('\\|'),
+             into = taxa_ranks,
+    ) %>% 
+    mutate_all(na_if,"") %>% 
+    mutate_all(na_if,'\\*') %>% 
+    mutate_all(na_if,'*') %>% 
+    # mutate_all(na_if,"uncultured") %>% 
+    column_to_rownames("amplicon") %>% 
+    as.matrix() -> tax_table
+  
+  #----------------
+  
+  merge_phyloseq(tax_table %>%  tax_table(),
+                 otu_table %>% otu_table(taxa_are_rows = TRUE)) -> ps
+  #----------------
+  
+  
+  df %>% 
+    select(amplicon, sequence) %>% 
+    column_to_rownames("amplicon") -> seqs
+  
+  
+  sequences <-  Biostrings::DNAStringSet(seqs$sequence)
+  names(sequences) <- taxa_names(ps)
+  
+  #----------------
+  
+  merge_phyloseq(sequences,
+                 ps) -> ps
+  
+  #----------------
+  if(rename_OTU == TRUE){
+    taxa_names(ps)  <- paste0(otu_prefix, str_pad(seq(ntaxa(ps)),
+                                                  nchar(ntaxa(ps)),
+                                                  pad = "0"))
+  }
+  
+  
+  #----------------
+  
+  return(ps)
+  
+}
 
