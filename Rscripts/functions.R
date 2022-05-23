@@ -2362,6 +2362,9 @@ phyloseq_vsearch_lulu_cluster_ASV <- function(physeq, # readRDS("data/processed/
 #' @examples
 #'
 #'
+#'
+#'
+#'
 #'phyloseq_picrust2(physeq = readRDS("/Users/fconstan/Documents/GitHub/amchick/data/processed/physeq_update_11_1_21.RDS"),
 #'                  input_dir = ("/Users/fconstan/Desktop/picrust_test/AP-picrust/"),
 #'                  output_dir = ("/Users/fconstan/Desktop/picrust_test/AP-picrust/results"),# should not exist
