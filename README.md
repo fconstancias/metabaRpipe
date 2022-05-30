@@ -130,8 +130,7 @@ Rscript \
   --db ${MY_DIR}//metabaRpipe/databases/databases/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz \
   --db_species ${MY_DIR}/metabaRpipe/databases//databases/GTDB_bac120_arc122_ssu_r202_Species.fa.gz \
   --metadata ${MY_DIR}/metabaRpipe/metadata.xlsx \
-  --save_out test_pipe_Rscript.RDS \
-  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R > mylogs.txt 2>&1
+  --save_out test_pipe_Rscript.RDS > mylogs.txt 2>&1
 ```
 The `> mylogs.txt 2>&1` trick will redirect what is printed on the screen to a file including potential errors and also parameters that you used.
 
@@ -524,8 +523,7 @@ Below and example of the script you could use to run your data under the muse SL
 	  --db ${MY_DIR}//metabaRpipe/databases/databases/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz \
 	  --db_species ${MY_DIR}/metabaRpipe/databases//databases/GTDB_bac120_arc122_ssu_r202_Species.fa.gz \
 	  --metadata ${MY_DIR}/metabaRpipe/metadata.xlsx \
-	  --save_out test_pipe_Rscript.RDS \
-	  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R > mylogs.txt 2>&1
+	  --save_out test_pipe_Rscript.RDS > mylogs.txt 2>&1
 	
 	# JOB END
 	
@@ -698,9 +696,8 @@ conda activate metabaRpipe
 Rscript \
   ${MY_DIR}/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
   -p dada2/phyloseq.RDS \
-  -o dada2/phyloseq_phylo \
-  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
-```
+  -o dada2/phyloseq_phylo
+ ```
 
 *N.B.:* The phyloseq object should include the ASV sequences stored as `refseq()` :
 
@@ -803,8 +800,7 @@ Rscript \
   --db ${MY_DIR}/metabaRpipe/databases/eHOMD_RefSeq_dada2_V15.22.fasta.gz \
   --db_species ${MY_DIR}/metabaRpipe/databases/eHOMD_RefSeq_dada2_assign_species_V15.22.fasta.gz \
   --reverse_comp TRUE \
-  -T 4 \
-  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+  -T 4
 ```
 We could also run the function directly from R/ Rstudio:
 
@@ -880,8 +876,7 @@ Rscript \
   --reverse_comp TRUE \
   --db ~/db/DADA2/SILVA_SSU_r132_March2018.RData \ # check where you downloaded your database
   --tax_threshold 60 \
-  -T 4 \
-  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+  -T 4
 ```
 
 or from R/Rstudio.
@@ -1137,8 +1132,7 @@ Options:
 Rscript ${MY_DIR}/metabaRpipe/Rscripts/run_phyloseq_picrust2.Rscript --phyloseq_path ~/dada2/phyloseq.RDS \
 --output ~/dada2/picrust2-out \
 --traits COG,EC,KO,PFAM \
---add_description TRUE \
--f ${MY_DIR}/metabaRpipe/Rscripts/functions.R
+--add_description TRUE
 ```
 
 Check the official [picrust2 repository](https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)) for more details regarding the outputs.
@@ -1175,8 +1169,7 @@ Options:
 ```bash
 Rscript \
   ${MY_DIR}/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript -i dada2/physeq_phylo/phyloseq_phylo.RDS \
-  -o qiime2 \
-  -f metabaRpipe/Rscripts/functions.R 
+  -o qiime2
 ```
 
 ```bash

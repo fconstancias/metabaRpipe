@@ -119,7 +119,7 @@ option_list = list(
   make_option(c("--seed_value"), type="numeric", default = 123, 
               help="Seed value for random number generator", metavar="numeric"),
   
-  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+  make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R functions", metavar="character")
   
   

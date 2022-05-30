@@ -22,7 +22,7 @@ option_list = list(
   make_option(c("-T", "--slots"), type="numeric", default = 6, 
               help="Number of threads to perform the analyses", metavar="numeric"),
   
-  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+  make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R functions", metavar="character")
   
 ); 

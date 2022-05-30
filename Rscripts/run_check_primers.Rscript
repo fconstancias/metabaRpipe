@@ -29,7 +29,7 @@ option_list = list(
   make_option(c("--n_samples"), type="numeric", default = 1, 
               help="Number of samples to perform the analysis", metavar="character"),
   
-  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+  make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R functions", metavar="character"),
   
   make_option(c("--export"), type="character", default= FALSE, 

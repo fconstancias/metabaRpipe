@@ -44,7 +44,7 @@ option_list = list(
               If the minimum_ratio_type is set to min (default), the minimum_ratio applies to the lowest observed ration across the samples. 
               If the minimum_ratio_type is set to avg (default), the minimum_ratio applies to the mean of observed ration across the samples.avg. 
               (default is 1).", metavar="character"),
-  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+  make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R function", metavar="character"),
   make_option(c("--seed"), type="numeric", default= 123, 
               help="seed number for random generator", metavar="character")

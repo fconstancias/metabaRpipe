@@ -38,7 +38,7 @@ option_list = list(
   make_option(c("-T", "--threads"), type="character", default= NULL, 
               help="Number of threads", metavar="character"),
   
-  make_option(c("-f", "--fun_dir"), type="character", default= NULL, 
+  make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R functions", metavar="character")
 ); 
 opt_parser = OptionParser(option_list = option_list);
