@@ -1357,9 +1357,9 @@ if(poolMethod == "pseudo") {
 [https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20](https://docs.qiime2.org/2022.2/tutorials/phylogeny/?highlight=phylogeny#id20)
 
 ## To do:
-- CIRAD users (cluster)
+- <s>CIRAD users (cluster)</s>
 - conda environment
-- exemple running from HPLC slurm / ...
+- <s>exemple running from HPLC slurm / ...</s>
 - phyloseq_to_clusters (enterotype)
 - <s>change env name on C18 workstation -> metabaRpipe</s>
 - [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
