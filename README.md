@@ -20,6 +20,7 @@ Cite this package **in addition** to the developers of `dada2` and the other pac
   * [Raw data organisation:](https://github.com/fconstancias/metabaRpipe#raw-data-organisation)
   * [Define your own presets:](https://github.com/fconstancias/metabaRpipe#define-your-own-presets)
   * [ETH FBT users:](https://github.com/fconstancias/metabaRpipe#eth-fbt-users)
+  * [muse users:](https://github.com/fconstancias/metabaRpipe#muse-users)
   * [Getting some help:](https://github.com/fconstancias/metabaRpipe#getting-some-help)
   * [Additional functionalities:](https://github.com/fconstancias/metabaRpipe#additional-functionalities)
     + [1. Compute an ASV-phylogenetic tree in a `phyloseq` object:](https://github.com/fconstancias/metabaRpipe#compute-an-asv-phylogenetic-tree-in-a-phyloseq-object)
@@ -416,7 +417,7 @@ You can modify the `${MY_DIR}/metabaRpipe/Rscripts/functions.R` script by adding
 
 You can use the following commands to process the data targeting 16S V4 region using the PCR primers and parameters we use in the FBT group from the C18 bioinformatic workstation. Everything is installed and configured, you can follow the steps below to analyse your data.
 
-* Get familiar with the pipeline and imporant information `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf`.
+* Get familiar with the pipeline and important information `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf`.
 
 * Book the C18 bioinformatic workstation using the [calendar](https://hest.sp.ethz.ch/bt-calendars/_layouts/15/start.aspx#/Lists/D42%20PharmaBiome%20office).
 
@@ -479,6 +480,65 @@ More details [here](https://github.com/fconstancias/metabaRpipe#7-export-qiime2-
 
 
 You now have everything ready for analysis using your preferred platform !
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## muse users:
+
+Thanks to the flexibility of `conda`, metabaRpipe can be installed and run from any cluster computing environment. First, you would have to follow the  [installation instructions](https://github.com/fconstancias/metabaRpipe#installation).
+
+Below and example of the script you could use to run your data under the muse SLURM cluster. You would need to adapt the job scheduler related informations based on your credentials as well as the job scheduler. More example regarding the SLURM parameters can be found [here](https://hpc-uit.readthedocs.io/en/latest/jobs/examples.html).
+
+
+	#!/bin/sh
+	
+	#SBATCH --job-name=**metabaRpipe**
+	#SBATCH --mail-type=END,FAIL   # Mail events (NONE, BEGIN, END, FAIL, ALL)
+	#SBATCH -N 1 #  Nombre de nœuds
+	#SBATCH -n 6 # Nombre de tâches au total
+	#SBATCH --mem 10 # Mémoire réservée par nœud
+	#SBATCH --mail-user **my_email@cirad.fr**
+	#SBATCH --ntasks-per-node=6
+	#SBATCH --ntasks-per-core=1
+	#SBATCH --partition=**my_queue**
+	
+	
+	
+	module load python/Anaconda/3-5.1.0
+	eval "$(conda shell.bash hook)" #https://github.com/conda/conda/issues/7980
+	
+	conda activate metabaRpipe
+	
+	
+	MY_DIR=/home/user/scratch/my_directory/
+	export OMP_NUM_THREADS=10
+	
+	
+	# JOB STARTS
+	
+	Rscript \
+	  ${MY_DIR}/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
+	  -i ${MY_DIR}/metabaRpipe/test-data/ \
+	  --preset V3V4 \
+	  --db ${MY_DIR}//metabaRpipe/databases/databases/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz \
+	  --db_species ${MY_DIR}/metabaRpipe/databases//databases/GTDB_bac120_arc122_ssu_r202_Species.fa.gz \
+	  --metadata ${MY_DIR}/metabaRpipe/metadata.xlsx \
+	  --save_out test_pipe_Rscript.RDS \
+	  -f ${MY_DIR}/metabaRpipe/Rscripts/functions.R > mylogs.txt 2>&1
+	
+	# JOB END
+	
+	
+	exit 0
+
+In order to run that script you would create a bash file of those command and submit the job using qsub.
+
+	vim metabaRpipe.sbatch
+	# copy paste the commands above - after adjusting the paths and parameters [especially the **bold** parameters].
+	sbatch metabaRpipe.sbatch
+
+Then you can follow `squeue -j jobid` or `squeue -u userid`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -1301,7 +1361,7 @@ if(poolMethod == "pseudo") {
 - conda environment
 - exemple running from HPLC slurm / ...
 - phyloseq_to_clusters (enterotype)
-- change env name on C18 workstation -> metabaRpipe
+- <s>change env name on C18 workstation -> metabaRpipe</s>
 - [FM'](https://github.com/frederic-mahe/swarm/wiki/Fred%27s-metabarcoding-pipeline)s `vsearch swarm` pipeline.
 - <s>add https://zenodo.org/account/settings/github/ -> DOI</s>
 - <s>add phylogenetic tree to a phyloseq object</s>
