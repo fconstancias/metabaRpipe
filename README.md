@@ -823,7 +823,7 @@ ASV006 Bacteria Proteobacteria Gammapr… Burkho… Burkhol… Massil… ""
 ```
 
 ```R
-source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
+source("https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R")
 
 readRDS("dada2/phyloseq.RDS") %>%
   phyloseq_dada2_tax(physeq = ., 
@@ -885,7 +885,7 @@ or from R/Rstudio.
 require(tidyverse)
 require(phyloseq)
 
-source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
+source("https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R")
 
 
 readRDS("dada2/physeq.RDS") %>%
@@ -909,7 +909,7 @@ This can be done within R/Rstudio:
 ```R
 require(tidyverse); require(phyloseq)
 
-source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
+source("https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R")
 
 readRDS("dada2/phyloseq.RDS") %>%
   physeq_add_metadata(physeq = .,
@@ -943,7 +943,7 @@ conda install -c bioconda vsearch -y
 ```
 
 ```R
-source("https://raw.githubusercontent.com/fconstancias/metabaRpipe/master/Rscripts/functions.R")
+source("https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R")
 
 readRDS("dada2/phyloseq.RDS") %>%
   phyloseq_vsearch_lulu_cluster_ASV(vsearch ="/Users/test/miniconda3/envs/metabaRpipe4/bin/vsearch") -> phyloseq_lulu_clust
