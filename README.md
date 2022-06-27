@@ -440,15 +440,23 @@ cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
 conda activate metabaRpipe
 ```
 
-* Run the pipeline with the default V4 FBT parameters - press enter to start:
+* Run the pipeline with the default V4 FBT parameters - press enter to start. By default it will use the 2 PCR approach used in the lab `--preset V4-2PCR`, check the next paragraph if you are analysing dataset generated using the 1 PCR approach:
 
 ```bash
-Rscript \
-  /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/dada2_metabarcoding_pipeline.Rscript \
+Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
   -i raw/ -T 4 \
   --db /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
   --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
-  -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R \
+  --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
+```
+
+* If you are analysing dataset generated using the 1 PCR approach pleaase use the `--preset V4-1PCR`
+
+```bash
+Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
+  -i raw/ -T 4 --preset V4-1PCR \
+  --db /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
+  --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
   --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
@@ -457,11 +465,9 @@ Rscript \
 * Add a phylogenetic tree of the ASV directly to the R phyloseq object:
 
 ```bash
-Rscript \
-  /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/run_add_phylogeny_to_phyloseq.Rscript \
+Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
   -p dada2/phyloseq.RDS \
-  -o dada2/phyloseq_phylo \
-  -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R > add_phylo_logs.txt 2>&1
+  -o dada2/phyloseq_phylo  > add_phylo_logs.txt 2>&1
 
 ```
 More details [here](https://github.com/fconstancias/metabaRpipe#1--compute-an-asv-phylogenetic-tree-in-a-phyloseq-object).
@@ -469,11 +475,9 @@ More details [here](https://github.com/fconstancias/metabaRpipe#1--compute-an-as
 * Export qiime2 compatible files:
 
 ```bash
-Rscript \
-  /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/phyloseq_export_qiime.Rscript \
+Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript \
   -i dada2/phyloseq_phylo/phyloseq_phylo.RDS \
-  -o dada2/qiime2 \
-  -f /Users/localadmin/ENGINEs/metabarcodingRpipeline/scripts/functions_export_simplified.R
+  -o dada2/qiime2 
 ```
 More details [here](https://github.com/fconstancias/metabaRpipe#7-export-qiime2-compatible-files).
 
@@ -704,6 +708,7 @@ Rscript \
 ```R
 readRDS("dada2/phyloseq.RDS")
 ```
+
 ```
 phyloseq-class experiment-level object
 otu_table()   OTU Table:          [ 322 taxa and 6 samples ]:
