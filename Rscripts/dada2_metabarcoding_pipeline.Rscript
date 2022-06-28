@@ -44,7 +44,7 @@ option_list = list(
   make_option(c("--sep"), type="character", default = "[^_]+", 
               help="regex pattern to identify sample names  [default: after first _]", metavar="character"),
   
-  make_option(c("--preset"), type="character", default = "V4", 
+  make_option(c("--preset"), type="character", default = NULL, 
               help="Will use default primers and parameters as defined in the run_dada2_pipeline() [primers, trunc, maxee, overlap, expected length, ...]", metavar="character"),
   
   make_option(c("--PRIMER_F"), type="character", default = NULL, 
