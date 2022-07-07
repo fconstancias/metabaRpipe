@@ -62,6 +62,9 @@ option_list = list(
   make_option(c("--pool"), type="character", default = "pseudo", 
               help="Pooling strategy", metavar="character"),
   
+  make_option(c("--priors"), type="logical", default = FALSE, 
+              help="see documentation...", metavar="character"),
+  
   make_option(c("--minover"), type="numeric", default = 15, 
               help="Minimum overlap for merginf R1 and R2 reads [if using -V V4 or V3V4, this parameter is already set]", metavar="character"),
   
@@ -191,6 +194,7 @@ run_dada2_pipe(raw_files_path = opt$input_directory,
                tax_threshold = opt$tax_threshold,
                nbases = opt$nbases,
                pool = opt$pool,
+               priors = opt$priors,
                trim_length = opt$trim_length,
                trunclen = opt$trunclen,
                maxee = opt$maxee,
