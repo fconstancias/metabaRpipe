@@ -62,7 +62,7 @@ option_list = list(
   make_option(c("--pool"), type="character", default = "pseudo", 
               help="Pooling strategy", metavar="character"),
   
-  make_option(c("--priors"), type="logical", default = FALSE, 
+  make_option(c("--priors"), type="character", default = FALSE, 
               help="see documentation...", metavar="character"),
   
   make_option(c("--minover"), type="numeric", default = 15, 
