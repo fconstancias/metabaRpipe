@@ -23,10 +23,10 @@ option_list = list(
   make_option(c("-o", "--output_directory"), type="character", default= "00_atropos_primer_removed", 
               help="Name of the output directory", metavar="character"),
   
-  make_option(c("--fwd_primer"), type="character", default = NULL, 
+  make_option(c("--fwd_primer"), type="character", default = "CCTAYGGGRBGCASCAG", 
               help="Sequence of the Fwd primer to remove", metavar="character"),
   
-  make_option(c("--rev_primer"), type="character", default = NULL, 
+  make_option(c("--rev_primer"), type="character", default = "GGACTACNNGGGTATCTAAT", 
               help="Sequence of the Rev primer to remove", metavar="character"),
   
   make_option(c("-c", "--raw_file_pattern"), type="character", default= c("*_R1_*.gz","*_R2_*.gz"), 
