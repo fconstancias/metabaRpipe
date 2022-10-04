@@ -440,14 +440,14 @@ cd /Users/fbt-group/Documents/WORKSHOP/My_dir/My_analysis/
 conda activate metabaRpipe
 ```
 
-* Run the pipeline with the default V4 FBT parameters - press enter to start. By default it will use the 2 PCR approach used in the lab `--preset V4-2PCR`, check the next paragraph if you are analysing dataset generated using the 1 PCR approach:
+* Run the pipeline with the default V4 FBT parameters - press enter to start. If you generated the library using the 2 PCR approach used in the lab use `--preset V4-2PCR`, check the next paragraph if you are analysing dataset generated using the 1 PCR approach:
 
 ```bash
 Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
   -i raw/ -T 4 \
   --db /Users/fbt-group/github/metabaRpipe/databases/silva_nr99_v138.1_train_set.fa.gz \
   --db_species /Users/fbt-group/github/metabaRpipe/databases/silva_species_assignment_v138.1.fa.gz \
-  --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
+  --metadata mapping_file.xlsx --preset V4-2PCR --atropos_binary cutadapt > run_pipe_logs.txt 2>&1
 ```
 
 * If you are analysing dataset generated using the 1 PCR approach pleaase use the `--preset V4-1PCR`
