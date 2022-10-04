@@ -422,16 +422,16 @@ You can use the following commands to process the data targeting 16S V4 region u
 
 * The information to access the C18 bioinformatic workstation can be found here: `p/Documentation/ILLUMINA_Sequencing/16S-bioinformatic-pipeline/FBT_bioinfo_pipeline.pdf` on `slide 16`.
 
-* Create a directory where you are going to place the raw sequencing data and generate the outputs under `/Users/localadmin/WORKSHOP`. You could do that using Mac Finder or from the terminal..
+* Create a directory where you are going to place the raw sequencing data and generate the outputs under `/Users/fbt-group/Documents/WORKSHOP`. You could do that using Mac Finder or from the terminal..
 
-* Organise the raw sequencing files in **Miseq-run-specific** **sub-directories** as explained in the **Raw data structure** section above. It should look like `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/localadmin/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
+* Organise the raw sequencing files in **Miseq-run-specific** **sub-directories** as explained in the **Raw data structure** section above. It should look like `/Users/fbt-group/Documents/WORKSHOP/My_dir/My_analysis/raw/my_run_1/` and if you are analysing more than 1 run you would other sub-directories, e.g., `/Users/fbt-group/Documents/WORKSHOP/My_dir/My_analysis/raw/my_run_2/`
 
 * [Open the terminal from the MAC dock](https://support.apple.com/en-gb/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/2.9/mac/10.14).
 
 * Using the terminal, navigate to the directory you have created `cd` *i.e.*, change directory command.
 
 ```bash
-cd /Users/localadmin/WORKSHOP/My_dir/My_analysis/
+cd /Users/fbt-group/Documents/WORKSHOP/My_dir/My_analysis/
 ```
 
 * Activate the conda environment. 
@@ -443,20 +443,20 @@ conda activate metabaRpipe
 * Run the pipeline with the default V4 FBT parameters - press enter to start. By default it will use the 2 PCR approach used in the lab `--preset V4-2PCR`, check the next paragraph if you are analysing dataset generated using the 1 PCR approach:
 
 ```bash
-Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
+Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
   -i raw/ -T 4 \
-  --db /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
-  --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
+  --db /Users/fbt-group/github/metabaRpipe/databases/silva_nr99_v138.1_train_set.fa.gz \
+  --db_species /Users/fbt-group/github/metabaRpipe/databases/silva_species_assignment_v138.1.fa.gz \
   --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
 * If you are analysing dataset generated using the 1 PCR approach pleaase use the `--preset V4-1PCR`
 
 ```bash
-Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
+Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/dada2_metabarcoding_pipeline.Rscript \
   -i raw/ -T 4 --preset V4-1PCR \
-  --db /Users/localadmin/ENGINEs/NEWPIPE/db/silva_nr99_v138.1_train_set.fa.gz \
-  --db_species /Users/localadmin/ENGINEs/NEWPIPE/db/silva_species_assignment_v138.1.fa.gz \
+  --db /Users/fbt-group/github/metabaRpipe/databases/silva_nr99_v138.1_train_set.fa.gz \
+  --db_species /Users/fbt-group/github/metabaRpipe/databases/silva_species_assignment_v138.1.fa.gz \
   --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
@@ -465,7 +465,7 @@ Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/dada2_metabarcoding_pipel
 * Add a phylogenetic tree of the ASV directly to the R phyloseq object:
 
 ```bash
-Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
+Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/run_add_phylogeny_to_phyloseq.Rscript \
   -p dada2/phyloseq.RDS \
   -o dada2/phyloseq_phylo  > add_phylo_logs.txt 2>&1
 
@@ -475,7 +475,7 @@ More details [here](https://github.com/fconstancias/metabaRpipe#1--compute-an-as
 * Export qiime2 compatible files:
 
 ```bash
-Rscript /Users/localadmin/ENGINEs/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript \
+Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/phyloseq_export_qiime.Rscript \
   -i dada2/phyloseq_phylo/phyloseq_phylo.RDS \
   -o dada2/qiime2 
 ```
