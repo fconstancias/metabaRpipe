@@ -460,7 +460,7 @@ Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/dada2_metabarcoding_pipelin
   --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
-* Two other presets are avialable to potentially resolve this [issue](https://github.com/benjjneb/dada2/issues/1669)  `--preset V4-1PCR-up` and `--preset V4-2PCR-up`
+* Two other presets are avialable to potentially resolve this [issue](https://github.com/benjjneb/dada2/issues/1669)  `--preset V4-1PCR-up` or  `--preset V4-2PCR-up` if you generated your libraries using the 1-PCR or 2-PCR approaches respectively.
 
 
 
