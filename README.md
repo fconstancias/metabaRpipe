@@ -460,6 +460,11 @@ Rscript /Users/fbt-group/github/metabaRpipe/Rscripts/dada2_metabarcoding_pipelin
   --metadata mapping_file.xlsx > run_pipe_logs.txt 2>&1
 ```
 
+* Two other presets are avialable to potentially resolve this [issue](https://github.com/benjjneb/dada2/issues/1669)  `--preset V4-1PCR-up` and `--preset V4-2PCR-up`
+
+
+
+
 [Check the output](https://github.com/fconstancias/metabaRpipe#exploring-the-outputs).
 
 * Add a phylogenetic tree of the ASV directly to the R phyloseq object:
