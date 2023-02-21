@@ -113,7 +113,7 @@ option_list = list(
   make_option(c("--export"), type="logical", default = TRUE, 
               help= "Export pdf, table and intermediate RDS files?", metavar="character"),
   
-  make_option(c("--remove_input_fastq"), type="logical", default = TRUE, 
+  make_option(c("--remove_input_fastq"), type="logical", default = FALSE, 
               help= "Remove intermediate fastq.gz files", metavar="character"),
   
   make_option(c("-T", "--slots"), type="numeric", default = 6, 
