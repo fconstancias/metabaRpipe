@@ -30,6 +30,7 @@ Cite this package **in addition** to the developers of `dada2` and the other pac
     + [5. Cluster ASV using `DECIPHER`:](https://github.com/fconstancias/metabaRpipe#5-cluster-asv-using-decipher)
     + [6. `picrust2` functional potential estimation:](https://github.com/fconstancias/metabaRpipe#6-picrust2-functional-potential-estimation)
     + [7. Export `qiime2` compatible files:](https://github.com/fconstancias/metabaRpipe#7-export-qiime2-compatible-files)
+    + [8. Combine `phyloseq` objects:](https://github.com/fconstancias/metabaRpipe#7-export-qiime2-compatible-files)
 * [To do:](#to-do-)
 
 
@@ -1253,6 +1254,11 @@ qiime metadata tabulate \
 
 ```
  <p align="right">(<a href="#top">back to top</a>)</p>
+
+#### 8. Combine `phyloseq` objects:
+
+You might want to ... *in progress* ..
+
 
 ## `QIIME2`:
 
