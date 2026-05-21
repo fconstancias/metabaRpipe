@@ -2,9 +2,7 @@
 
 rm(list = ls())
 
-
 ## ------------------------------------------------------------------------
-
 require("optparse")
 
 ## ------------------------------------------------------------------------
@@ -29,7 +27,7 @@ option_list = list(
   make_option(c("--cut_pattern"), type="character", default = c("_primersout_R1_.fastq.gz","_primersout_R2_.fastq.gz"), 
               help="Patterns for R1 and R2 of atropos files", metavar="character"),
   
-    make_option(c("--rm_primers"), type="logical", default = TRUE, 
+  make_option(c("--rm_primers"), type="logical", default = TRUE, 
               help="Perform atropos PCR primer check & removal ?", metavar="character"),
   
   make_option(c("--filt_dir"), type="character", default = "dada2/02_dada2_filtered_denoised_merged", 
@@ -63,7 +61,13 @@ option_list = list(
               help="Pooling strategy", metavar="character"),
   
   make_option(c("--priors"), type="character", default = "FALSE", 
-              help="see documentation...", metavar="character"),
+              help="Sequence file or 'FALSE' [default: FALSE]", metavar="character"),
+  
+  make_option(c("--errorEstimationFunction"), type="character", default = "loessErrfun", 
+              help="Error estimation model to use: 'loessErrfun' or 'binned' [default: loessErrfun]", metavar="character"),
+  
+  make_option(c("--bin_qual"), type="character", default = "3,10,17,22,27,35,40", 
+              help="Binned quality scores used if errorEstimationFunction is 'binned' [default: '3,10,17,22,27,35,40']", metavar="character"),
   
   make_option(c("--minover"), type="numeric", default = 15, 
               help="Minimum overlap for merginf R1 and R2 reads [if using -V V4 or V3V4, this parameter is already set]", metavar="character"),
@@ -124,33 +128,24 @@ option_list = list(
   
   make_option(c("-f", "--fun_dir"), type="character", default= "https://raw.githubusercontent.com/fconstancias/metabaRpipe-source/master/Rscripts/functions.R", 
               help="Directory containing the R functions", metavar="character")
-  
-  
 ); 
+
 opt_parser = OptionParser(option_list = option_list);
 opt = parse_args(opt_parser)
 
 ## ------------------------------------------------------------------------
-# parse_args(opt_parser, args = c("--help"))
-# 
-# if(is.null(opt$input_directory)) {
-#   print_help(opt_parser)
-#   stop("You must give an input directory (-i)")
-# }
-# 
-# if(is.null(opt$atropos_binary)) {
-#   print_help(opt_parser)
-#   stop("You must provide path to atropos program (-a)")
-# }
-
 unlist(lapply(strsplit(opt$trunclen, ","), as.numeric)) -> opt$trunclen
 unlist(lapply(strsplit(opt$trim_length, ","), as.numeric)) -> opt$trim_length
 unlist(lapply(strsplit(opt$maxee, ","), as.numeric)) -> opt$maxee
 unlist(lapply(strsplit(opt$cut_pattern, ","), as.character)) -> opt$cut_file_pattern
 unlist(lapply(strsplit(opt$raw_file_pattern, ","), as.character)) -> opt$raw_file_pattern
 
+# Parse the comma-separated bin_qual values into a numeric vector
+unlist(lapply(strsplit(opt$bin_qual, ","), as.numeric)) -> opt$bin_qual
 
+# Load external functions
 source(opt$fun_dir)
+
 ## ------------------------------------------------------------------------
 # cat(paste0('\n# Input directory: ',opt$input_directory,'.\n'))
 # 
@@ -178,6 +173,8 @@ source(opt$fun_dir)
 
 ## ------------------------------------------------------------------------
 
+
+# Run the updated pipeline function with options passed from command line
 run_dada2_pipe(raw_files_path = opt$input_directory,
                raw_file_pattern = opt$raw_file_pattern,
                atropos_bin = opt$atropos_binary,
@@ -213,7 +210,10 @@ run_dada2_pipe(raw_files_path = opt$input_directory,
                export = opt$export,
                remove_input_fastq = opt$remove_input_fastq,
                SLOTS = opt$slots,
-               seed_value = opt$set_seed)
+               seed_value = opt$seed_value,
+               errorEstimationFunction = opt$errorEstimationFunction,
+               bin_qual = opt$bin_qual)
+
 
 ## ------------------------------------------------------------------------
 
