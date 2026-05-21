@@ -57,8 +57,8 @@ conda activate metabaRpipe
 4. Install `R` and `atropos` and `devtools` R package:
 
 ```bash
-conda install -c conda-forge r-base=4.1 -y
-conda install -c bioconda atropos=1.1.25 -y
+conda install -c conda-forge r-base -y
+conda install -c bioconda atropos -y
 conda install -c conda-forge r-devtools -y
 ```
 5. Confirm R was correctly installed within the conda environment:
@@ -76,7 +76,7 @@ which should result in something like this, indicating you will use R installed 
 
 ```R
 R
-	
+install.packages("remotes", repos = "https://cloud.r-project.org")	
 install.packages("optparse", repos = "https://cloud.r-project.org")
 devtools::install_github('tidyverse/tidyverse')
 devtools::install_github("benjjneb/dada2")
