@@ -67,7 +67,7 @@ option_list = list(
               help="Error estimation model to use: 'loessErrfun' or 'binned' [default: loessErrfun]", metavar="character"),
   
   make_option(c("--bin_qual"), type="character", default = "3,10,17,22,27,35,40", 
-              help="Binned quality scores used if errorEstimationFunction is 'binned' [default: '3,10,17,22,27,35,40']", metavar="character"),
+              help="Binned quality scores used if errorEstimationFunction is 'binned'. Use 'NULL' to detect automatically. [default: '3,10,17,22,27,35,40']", metavar="character"),
   
   make_option(c("--minover"), type="numeric", default = 15, 
               help="Minimum overlap for merginf R1 and R2 reads [if using -V V4 or V3V4, this parameter is already set]", metavar="character"),
@@ -140,8 +140,12 @@ unlist(lapply(strsplit(opt$maxee, ","), as.numeric)) -> opt$maxee
 unlist(lapply(strsplit(opt$cut_pattern, ","), as.character)) -> opt$cut_file_pattern
 unlist(lapply(strsplit(opt$raw_file_pattern, ","), as.character)) -> opt$raw_file_pattern
 
-# Parse the comma-separated bin_qual values into a numeric vector
-unlist(lapply(strsplit(opt$bin_qual, ","), as.numeric)) -> opt$bin_qual
+# Handle 'NULL' input for bin_qual
+if (is.null(opt$bin_qual) || toupper(opt$bin_qual) == "NULL" || opt$bin_qual == "") {
+  opt$bin_qual <- NULL
+} else {
+  unlist(lapply(strsplit(opt$bin_qual, ","), as.numeric)) -> opt$bin_qual
+}
 
 # Load external functions
 source(opt$fun_dir)
@@ -171,8 +175,9 @@ source(opt$fun_dir)
 # cat(paste0('\n# Seed value for random number generator: ',opt$seed_value,'.\n'))
 # cat(paste0('\n# Directory for R script: ',opt$fun_dir,'.\n'))
 
-## ------------------------------------------------------------------------
 
+
+## ------------------------------------------------------------------------
 
 # Run the updated pipeline function with options passed from command line
 run_dada2_pipe(raw_files_path = opt$input_directory,
@@ -214,9 +219,9 @@ run_dada2_pipe(raw_files_path = opt$input_directory,
                errorEstimationFunction = opt$errorEstimationFunction,
                bin_qual = opt$bin_qual)
 
-
 ## ------------------------------------------------------------------------
-
+print(sessionInfo())
+print(Sys.time())
 
 # cat("\n\nHere some Info for the record keeping:\n\n")
 print(sessionInfo())
